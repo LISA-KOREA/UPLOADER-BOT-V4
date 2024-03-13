@@ -31,7 +31,7 @@
 
 <b><details><summary>Tap To watch</summary>
 
-<a href="https://youtube.com/@NTBOT?feature=shared"><img alt="how to create" src="https://img.shields.io/badge/-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white"/></a> 
+<a href="https://youtu.be/oIUXoIk59dU?feature=shared"><img alt="how to create" src="https://img.shields.io/badge/-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white"/></a> 
 
 
 </b>
