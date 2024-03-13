@@ -1,0 +1,70 @@
+{
+  "name": "UUploader Bot V4 🚀",
+  "description": "Telegram's best Open Source Url Uploader Bot. Create your Fork now.",
+  "logo": "https://te.legra.ph/file/82c925ccc38606d837831.jpg",
+  "keywords": [
+    "telegram",
+    "best",
+    "yt-dlp",
+    "downloader",
+    "open",
+    "source",
+    "ffmpeg",
+    "remote",
+    "uploader"
+  ],
+  "website": "https://t.me/UploadLinkToFileBot",
+  "repository": "https://github.com/PlanetBots",
+  "env": {
+    "WEBHOOK": {
+      "description": "Setting this to ANYTHING will enable webhooks when in env mode",
+      "value": "ANYTHING"
+    },
+    "BOT_TOKEN": {
+      "description": "Your bot token, as a string.",
+      "value": ""
+    },
+    "API_ID": {
+      "description": "Get this value from https://my.telegram.org",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "Get this value from https://my.telegram.org",
+      "value": ""
+    },
+    "DATABASE_URL": {
+      "description": "Your Mongodb Url",
+      "value": ""
+    },
+    "LOG_CHANNEL": {
+      "description": "Your Any Own Private Channel ID Where Your Bot As Admin With Full Permission",
+      "value": ""
+    },
+    "UPDATES_CHANNEL": {
+      "description": "For Force Subscribe. Paste your Update channel ID",
+      "value": ""
+    },
+    "OWNER_ID": {
+      "description": "Your Telegram ID For Broadcast",
+      "value": "12345678"
+    },
+    "BOT_USERNAME": {
+      "description": "Your Bot Username Without @",
+      "value": ""
+    }
+  },
+  "addons": [
+  ],
+  "buildpacks": [{
+    "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+  }, {
+    "url": "heroku/python"
+  }],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  }
+}
+
