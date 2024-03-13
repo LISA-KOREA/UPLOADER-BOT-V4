@@ -1,5 +1,5 @@
 {
-  "name": "UUploader Bot V4 🚀",
+  "name": "Uploader Bot V4 🚀",
   "description": "Telegram's best Open Source Url Uploader Bot. Create your Fork now.",
   "logo": "https://te.legra.ph/file/82c925ccc38606d837831.jpg",
   "keywords": [
@@ -14,7 +14,7 @@
     "uploader"
   ],
   "website": "https://t.me/UploadLinkToFileBot",
-  "repository": "https://github.com/PlanetBots",
+  "repository": "https://github.com/LISA-KOREA/UPLOADER-BOT-V4",
   "env": {
     "WEBHOOK": {
       "description": "Setting this to ANYTHING will enable webhooks when in env mode",
