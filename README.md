@@ -13,6 +13,13 @@
 
 #
 <a href="https://github.com/LISA-KOREA"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=47000&size=40&pause=1000&color=FF0000&random=false&width=500&height=55&lines=GIVE+ME+A+STAR" alt="Typing SVG" /></a>
+
+#
+
+<a href="https://www.buymeacoffee.com/lisakorean" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+
+
 ## How To Deploy
 
 <b><details><summary>Tap On Me For Deploy</summary>
