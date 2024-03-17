@@ -21,7 +21,7 @@
 
 
 
-## How To Deploy
+## How To Deploy Heroku
 
 <b><details><summary>Tap On Me For Deploy</summary>
 
@@ -31,6 +31,17 @@
 
 #
   ㅤ<a href="https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2FLISA-KOREA%2FUPLOADER-BOT-V4"><img alt="heroku" src="https://img.shields.io/badge/-Deploy%20To%20Heroku-purple?style=for-the-badge&logo=heroku&logoColor=white"/></a> 
+
+</b>
+</details>
+
+### How To Deploy Render
+
+<b><details><summary>Tap On Me For Deploy</summary>
+
+- Runtime : `Python 3`
+- Build Command : `pip install -r requirements.txt`
+- Start Command : `gunicorn app:app & python3 bot.py`
 
 </b>
 </details>
