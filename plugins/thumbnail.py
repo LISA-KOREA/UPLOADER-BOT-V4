@@ -60,7 +60,8 @@ async def save_photo(bot, update):
 
 @Client.on_message(filters.command(["delthumb"]))
 async def delete_thumbnail(bot, update):
-    
+    if not update.from_user:
+        return await update.reply_text("I don't know about you sar :(")
     await add_user_to_database(bot, update)
     if Config.UPDATES_CHANNEL:
       fsub = await handle_force_subscribe(bot, update)
@@ -68,7 +69,7 @@ async def delete_thumbnail(bot, update):
         return
 
     download_location = os.path.join(
-        DOWNLOAD_LOCATION,
+        Config.DOWNLOAD_LOCATION,
         str(update.from_user.id)
     )
     try:
