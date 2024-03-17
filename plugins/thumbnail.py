@@ -58,7 +58,7 @@ async def save_photo(bot, update):
     )
     await db.set_thumbnail(update.from_user.id, thumbnail=update.photo.file_id)
 
-@Client.on_message(filters.command(["deletethumbnail"]))
+@Client.on_message(filters.command(["delthumb"]))
 async def delete_thumbnail(bot, update):
     if not update.from_user:
         return await update.reply_text("I don't know about you sar :(")
