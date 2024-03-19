@@ -86,7 +86,7 @@ Check How To Make MONGODB URL or [YouTube](https://youtu.be/VudXkbirhM8?feature=
 
 <b><details><summary>Tap On See My Community Details</summary>
 
-- YouTube Channel : [Telegram Bots 📱](https://youtube.com/@NTBOT?feature=shared)
+- YouTube Channel : [Telegram Bots 🤖](https://youtube.com/@NTBOT?feature=shared)
 - Telegram Channel : [NT Bots ❤️‍🩹](https://t.me/NT_BOT_CHANNEL)
 - Telegram Group : [NT Bots Support 🎗️](https://t.me/NT_BOTS_SUPPORT)
 - URL Uploader Bot : [Uploader Bot V4 🚀](https://t.me/UploadLinkToFileBot)
