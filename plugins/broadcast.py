@@ -1,3 +1,7 @@
+# TG @yeah_new
+
+
+
 import traceback, datetime, asyncio, string, random, time, os, aiofiles, aiofiles.os
 from pyrogram import filters
 from pyrogram import Client
