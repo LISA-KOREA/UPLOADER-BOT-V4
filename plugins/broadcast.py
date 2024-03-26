@@ -3,8 +3,8 @@ from pyrogram import filters
 from pyrogram import Client
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait, InputUserDeactivated, UserIsBlocked, PeerIdInvalid
-from Uploader.database.database import db
-from Uploader.config import Config
+from plugins.database.database import db
+from plugins.config import Config
 broadcast_ids = {}
 
 async def send_msg(user_id, message):
