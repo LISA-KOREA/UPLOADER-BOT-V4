@@ -1,4 +1,4 @@
-# ©️ @yeah_new | LISA-KOREA | @NT_BOT_CHANNEL
+# ©️ @yeah_new | YEAH-NEW | @NT_BOT_CHANNEL
 
 
 
