@@ -1,4 +1,5 @@
-# TG @yeah_new
+# ©️ @yeah_new | LISA-KOREA | @NT_BOT_CHANNEL
+
 
 
 
