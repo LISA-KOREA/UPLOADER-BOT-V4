@@ -43,6 +43,8 @@ sʜᴏᴡ ᴛʜᴜᴍʙɴᴀɪʟ
 
 **Sᴜᴘᴘᴏʀᴛ Gʀᴏᴜᴘ** : [NT Bᴏᴛs Sᴜᴘᴘᴏʀᴛ](https://t.me/NT_BOTS_SUPPORT)
 
+**Dᴀᴛᴀʙᴀsᴇ** : [MᴏɴɢᴏDB](https://cloud.mongodb.com)
+
 **Lᴀɴɢᴜᴀɢᴇ :** [Pʏᴛʜᴏɴ 3.12.2](https://www.python.org/)
 
 **Fʀᴀᴍᴇᴡᴏʀᴋ :** [ᴘʏʀᴏɢᴀᴍ 2.0.106](https://docs.pyrogram.org/)
