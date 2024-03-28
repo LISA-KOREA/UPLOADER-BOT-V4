@@ -1,3 +1,4 @@
+# https://github.com/LISA-KOREA/UPLOADER-BOT-V4/tree/main#this-is-my-last-url-uploader-bot-repo-i-wont-make-uploader-repo-anymore
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
