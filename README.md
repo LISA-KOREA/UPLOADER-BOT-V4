@@ -1,7 +1,7 @@
 ## URL Uᴘʟᴏᴀᴅᴇʀ ʙᴏᴛ V4 🚀
 
 
-[![logo](https://graph.org/file/aad66d93c09a3ae27a036.jpg)](https://telegram.dog/UploadLinkToFileBot)
+[![logo](https://tenor.com/bP1Dq.gif)](https://telegram.dog/UploadLinkToFileBot)
 
 [![GitHub forks](https://img.shields.io/github/forks/LISA-KOREA/UPLOADER-BOT-V4?&style=flat-square&logo=github)](https://github.com/LISA-KOREA/UPLOADER-BOT-V4/fork)
 ![Repo Size](https://img.shields.io/github/repo-size/LISA-KOREA/UPLOADER-BOT-V4?&style=flat-square&logo=github)
