@@ -59,6 +59,14 @@
 </b>
 </details>
 
+### Bot Commands 
+```
+start - Check Bot Online 🔔
+delthumb - Delete Your Thumbnail 🏞
+showthumb - Showing Your Thumbnail 🏞
+broadcast - Broadcast A Message To All Users 🌝
+
+```
 
 ## Environment Variable
 
