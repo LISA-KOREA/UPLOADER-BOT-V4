@@ -1,3 +1,31 @@
-build:
-  docker:
-    worker: Dockerfile
+services:
+  - type: web
+    plan: free
+    name: UPLOADER-BOT-V3
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    repo: https://github.com/LISA-KOREA/UPLOADER-BOT-V3.git      
+    branch: Master
+    envVars:
+      - key: BOT_TOKEN 
+        sync: false
+      - key: API_ID 
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: OWNER_ID 
+        sync: false
+      - key: BOT_USERNAME
+        sync: false
+      - key: WEBHOOK
+        sync: false
+      - key: DEF_THUMB_NAIL_VID_S
+        sync: false
+      - key: DATABASE_URI
+        sync: false 
+      - key: UPDATES_CHANNEL
+        sync: false
+      - key: LOG_CHANNEL
+        sync: false    
+    autoDeploy: true
