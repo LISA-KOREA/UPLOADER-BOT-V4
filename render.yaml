@@ -24,4 +24,4 @@ services:
         sync: false
       - key: LOG_CHANNEL
         sync: false    
-    autoDeploy: true
+    autoDeploy: false
