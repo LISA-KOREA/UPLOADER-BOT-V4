@@ -1,27 +1,3 @@
-services:
-  - type: web
-    plan: free
-    name: UPLOADER-BOT-V4
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python3 bot.py
-    repo: https://github.com/LISA-KOREA/UPLOADER-BOT-V4.git      
-    branch: main
-    envVars:
-      - key: BOT_TOKEN 
-        sync: false
-      - key: API_ID 
-        sync: false
-      - key: API_HASH
-        sync: false
-      - key: OWNER_ID 
-        sync: false
-      - key: BOT_USERNAME
-        sync: false
-      - key: DATABASE_URI
-        sync: false 
-      - key: UPDATES_CHANNEL
-        sync: false
-      - key: LOG_CHANNEL
-        sync: false    
-    autoDeploy: false
+build:
+  docker:
+    worker: Dockerfile
