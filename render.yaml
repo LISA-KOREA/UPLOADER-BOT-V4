@@ -1,12 +1,12 @@
 services:
   - type: web
     plan: free
-    name: UPLOADER-BOT-V3
-    env: python
+    name: UPLOADER-BOT-V4
+    env: python3
     buildCommand: pip install -r requirements.txt
-    startCommand: python bot.py
-    repo: https://github.com/LISA-KOREA/UPLOADER-BOT-V3.git      
-    branch: Master
+    startCommand: python3 bot.py
+    repo: https://github.com/LISA-KOREA/UPLOADER-BOT-V4.git      
+    branch: main
     envVars:
       - key: BOT_TOKEN 
         sync: false
