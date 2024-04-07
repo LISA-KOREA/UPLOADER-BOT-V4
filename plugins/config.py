@@ -49,7 +49,7 @@ class Config(object):
 
     UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "-1002087699847")
     
-    OWNER_ID = int(os.environ.get("OWNER_ID", "5029227688)
+    OWNER_ID = int(os.environ.get("OWNER_ID", "5029227688")
     
     TG_MIN_FILE_SIZE = 2097152000
     
