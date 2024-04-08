@@ -1,4 +1,4 @@
-# ©️ Tg @yeah_new | YEAH-NEW
+# ©️ Tg @yeah_new | YEAH-NEW | @NT_BOT_CHANNEL
 
 
 
@@ -91,7 +91,7 @@ async def broadcast_(c, m):
         broadcast_ids.pop(broadcast_id)
     completed_in = datetime.timedelta(seconds=int(time.time()-start_time))
     
-    await asyncio.sleep(3)
+    await asyncio.sleep(5)
     
     await out.delete()
     
