@@ -22,6 +22,8 @@ class Config(object):
     MAX_FILE_SIZE = 2097152000
     
     TG_MAX_FILE_SIZE = 2097152000
+
+    #PORT = int(os.environ.get('PORT', 5000))
     
     FREE_USER_MAX_FILE_SIZE = 2097152000
     
