@@ -97,10 +97,12 @@ Check How To Make MONGODB URL or [YouTube](https://youtu.be/VudXkbirhM8?feature=
 - YouTube Channel : [Telegram Bots 🤖](https://youtube.com/@NTBOT?feature=shared)
 - Telegram Channel : [NT Bots ❤️‍🩹](https://t.me/NT_BOT_CHANNEL)
 - Telegram Group : [NT Bots Support 🎗️](https://t.me/NT_BOTS_SUPPORT)
-- URL Uploader Bot : [Uploader Bot V4 🚀](https://t.me/UploadLinkToFileBot)
+- URL Uploader Bot : [Uploader Bot 🚀](https://t.me/UploadLinkToFileBot)
 - My Tg Id : [Lisa 👑](https://t.me/LISA_FAN_LK)
 
 </b>
 </details>
 
-### THIS IS MY LAST URL UPLOADER BOT REPO. I WON'T MAKE UPLOADER REPO ANYMORE
+### ⚠️ DON'T SELL THE REPO ###
+
+
