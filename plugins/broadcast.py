@@ -1,4 +1,4 @@
-# ©️ Tg @yeah_new | YEAH-NEW | @NT_BOT_CHANNEL
+# ©️ Tg @yeah_new | YEAR-NEW | @NT_BOT_CHANNEL
 
 
 
