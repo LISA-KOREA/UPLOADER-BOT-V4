@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# (c) Shrimadhav U K
+# (c) Shrimadhav U K | YEAR-NEW
 
 # the logging things
 import logging
@@ -110,10 +108,9 @@ async def youtube_dl_call_back(bot, update):
             "-o", download_directory
         ]
     else:
-        # command_to_exec = ["yt-dlp", "-f", youtube_dl_format, "--hls-prefer-ffmpeg", "--recode-video", "mp4", "-k", youtube_dl_url, "-o", download_directory]
         minus_f_format = youtube_dl_format
         if "youtu" in youtube_dl_url:
-            minus_f_format = f"{youtube_dl_format}+bestaudio"
+            minus_f_format = f"{youtube_dl_format}+bestaudio/best"
         command_to_exec = [
             "yt-dlp",
             "-c",
@@ -291,3 +288,4 @@ async def youtube_dl_call_back(bot, update):
             
             logger.info("✅ Downloaded in: " + str(time_taken_for_download))
             logger.info("✅ Uploaded in: " + str(time_taken_for_upload))
+            
