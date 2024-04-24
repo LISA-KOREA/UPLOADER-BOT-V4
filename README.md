@@ -44,7 +44,8 @@
 - Start Command : `gunicorn app:app & python3 bot.py`
 - Go to https://uptimerobot.com/ and add a monitor to keep your bot alive
 - Use these settings when adding a monitor
-[!](https://graph.org/file/899036d51bcd4defaa34e.jpg)
+
+[logo](https://graph.org/file/899036d51bcd4defaa34e.jpg)
 
 
 
