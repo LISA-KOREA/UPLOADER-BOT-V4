@@ -1,12 +1,12 @@
-#import os
+import os
 
-#async def clendir(directory):
+async def clendir(directory):
 
-    #try:
-        #os.remove(directory)
-    #except:
-       # pass
-  #  try:
-      #  shutil.rmtree(directory)
-   # except:
-      #  pass
+    try:
+        os.remove(directory)
+    except:
+        pass
+    try:
+        shutil.rmtree(directory)
+    except:
+        pass
