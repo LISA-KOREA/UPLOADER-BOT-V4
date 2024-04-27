@@ -16,6 +16,7 @@ from datetime import datetime
 from pyrogram import enums 
 from plugins.config import Config
 from plugins.script import Translation
+from plugins.clendir import clendir
 from plugins.thumbnail import *
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 from pyrogram.types import InputMediaPhoto
@@ -159,22 +160,26 @@ async def youtube_dl_call_back(bot, update):
         return False
 
     if t_response:
-        logger.info(t_response)
-        try:
-            os.remove(save_ytdl_json_path)
-        except FileNotFoundError as exc:
-            pass
-        
-        end_one = datetime.now()
-        time_taken_for_download = (end_one -start).seconds
-        file_size = Config.TG_MAX_FILE_SIZE + 1
+        os.remove(save_ytdl_json_path)
+        asyncio.create_task(clendir(save_ytdl_json_path))
         try:
             file_size = os.stat(download_directory).st_size
-        except FileNotFoundError as exc:
-            download_directory = os.path.splitext(download_directory)[0] + "." + "mkv"
-            # https://stackoverflow.com/a/678242/4723940
-            file_size = os.stat(download_directory).st_size
-        if ((file_size > Config.TG_MAX_FILE_SIZE)):
+        except FileNotFoundError:
+            try:
+                directory = os.path.splitext(download_directory)[0] + "." + "mp4"
+                file_size = os.stat(directory).st_size
+            except FileNotFoundError:
+                try:
+                    directory = os.path.splitext(download_directory)[0] + "." + "mkv"
+                    file_size = os.stat(directory).st_size
+                except FileNotFoundError:
+                    file_size = 0
+
+        if file_size == 0:
+             await update.message.edit(text="File Not found 🤒")
+             asyncio.create_task(clendir(tmp_directory_for_each_user))
+             return
+        if file_size > Config.TG_MAX_FILE_SIZE:
             await update.message.edit_caption(
                 
                 caption=Translation.RCHD_TG_API_LIMIT.format(time_taken_for_download, humanbytes(file_size))
