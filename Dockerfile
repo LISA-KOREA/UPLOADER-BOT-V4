@@ -1,9 +1,17 @@
-FROM python:3.12-slim-buster
+# Use the official Python image
+FROM python:3.9-slim-buster
+
+# Set the working directory in the container
 WORKDIR /app
-ENV ENV PYTHONUNBUFFERED=1
+
+# Copy the dependencies file to the working directory
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get install -y ffmpeg
-CMD ["python3", "bot.py"]
+
+# Install any needed dependencies specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code to the working directory
+COPY . .
+
+# Command to run the application
+CMD ["python", "bot.py"]
