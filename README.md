@@ -52,6 +52,16 @@
 </b>
 </details>
 
+### DigitalOcean
+<b><details><summary>Tap On Me For Deploy</summary>
+
+- Run Command : `gunicorn app:app & python3 bot.py`
+- Worker : `python3 bot.py`
+
+
+</b>
+</details>
+
 ### How To Create YouTube Video
 
 <b><details><summary>Tap To watch</summary>
