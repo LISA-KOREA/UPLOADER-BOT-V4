@@ -174,7 +174,17 @@ async def youtube_dl_call_back(bot, update):
             download_directory = os.path.splitext(download_directory)[0] + "." + "mkv"
             # https://stackoverflow.com/a/678242/4723940
             file_size = os.stat(download_directory).st_size
-        
+            except Exception as e:
+                await update.message.edit_caption(
+                    Translation.UNKNOWN_ERROR
+                )
+                return
+        if file_size > Config.TG_MAX_FILE_SIZE:
+            await update.message.edit_caption(
+                Translation.RCHD_TG_API_LIMIT.format(custom_file_name, time_taken_for_download, humanbytes(file_size))
+            )
+            os.remove(download_directory)
+            return
         else:
 
         
