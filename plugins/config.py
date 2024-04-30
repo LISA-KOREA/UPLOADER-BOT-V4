@@ -11,11 +11,11 @@ logging.basicConfig(
 
 class Config(object):
     
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "6475853194:AAFcvGge6Mc7pzXGfo76fQFU_VvqJh4e-rI")
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
     
-    API_ID = int(os.environ.get("API_ID", "4888076"))
+    API_ID = int(os.environ.get("API_ID", ""))
     
-    API_HASH = os.environ.get("API_HASH", "8b9b8214d84305d5ba8042c93575ea84")
+    API_HASH = os.environ.get("API_HASH", "")
     
     DOWNLOAD_LOCATION = "./DOWNLOADS"
     
@@ -39,19 +39,19 @@ class Config(object):
     
     DEF_WATER_MARK_FILE = "UploadLinkToFileBot"
     
-    DATABASE_URL = os.environ.get("DATABASE_URL", "mongodb+srv://UploadLinkToFileBot:UploadLinkToFileBot@cluster0.1gybihh.mongodb.net/?retryWrites=true&w=majority")
+    DATABASE_URL = os.environ.get("DATABASE_URL", "")
     
     SESSION_NAME = os.environ.get("SESSION_NAME", "UploadLinkToFileBot")
     
-    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002145935116"))
+    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
     
     LOGGER = logging
 
-    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "-1002145935116")
+    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "")
     
-    OWNER_ID = int(os.environ.get("OWNER_ID", "5656422326"))
+    OWNER_ID = int(os.environ.get("OWNER_ID", ""))
     
     TG_MIN_FILE_SIZE = 2097152000
     
-    BOT_USERNAME = os.environ.get("BOT_USERNAME", "Urluploaderbotnewbot")
+    BOT_USERNAME = os.environ.get("BOT_USERNAME", "")
                                   
