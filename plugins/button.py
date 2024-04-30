@@ -107,7 +107,7 @@ async def youtube_dl_call_back(bot, update):
             "-o", download_directory
         ]
     else:
-        minus_f_format = f"{youtube_dl_format}+bestaudio"
+        minus_f_format = youtube_dl_format + "bestvideo+bestaudio/best"
         command_to_exec = [
             "yt-dlp",
             "-c",
