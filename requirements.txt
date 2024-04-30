@@ -11,6 +11,8 @@ olefile
 motor
 pymongo
 dnspython
+ffmpeg-python
+ffmpeg
 psutil
 loggers
 filetype
