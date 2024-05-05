@@ -104,7 +104,7 @@ async def viewthumbnail(bot, update):
                 ),
         reply_to_message_id=update.id)
     else:
-        await update.reply_text(text=f"ɴᴏ ᴛʜᴜᴍʙɴᴀɪʟ ғᴏᴜɴᴅ 🙄")
+        await update.reply_text(text=f"ɴᴏ ᴛʜᴜᴍʙɴᴀɪʟ ғᴏᴜɴᴅ 😏")
 
 
 async def Gthumb01(bot, update):
