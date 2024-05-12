@@ -33,7 +33,7 @@
       "value": ""
     },
     "DATABASE_URL": {
-      "description": "Your Mongodb Url",
+      "description": "Your Mongodb Url from mongodb.com",
       "value": ""
     },
     "LOG_CHANNEL": {
@@ -46,7 +46,7 @@
     },
     "OWNER_ID": {
       "description": "Your Telegram ID For Broadcast",
-      "value": "12345678"
+      "value": "1834908260"
     },
     "BOT_USERNAME": {
       "description": "Your Bot Username Without @",
