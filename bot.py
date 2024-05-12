@@ -1,7 +1,3 @@
-# Hey Give Me Star 🥲
-
-
-
 import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -21,7 +17,7 @@ if __name__ == "__main__" :
         os.makedirs(Config.DOWNLOAD_LOCATION)
     plugins = dict(root="plugins")
     Ntbots = Ntbots(
-        "UploadLinkToFileBot",
+        "URL UPLOADER BOT",
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
