@@ -1,12 +1,8 @@
 
-import math
 import time
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from plugins.script import Translation
-from pyrogram import enums 
-
-
-
+from pyrogram import enums
 
 async def progress_for_pyrogram(current, total, ud_type, message, start):
     now = time.time()
@@ -22,8 +18,8 @@ async def progress_for_pyrogram(current, total, ud_type, message, start):
         estimated_total_time = TimeFormatter(milliseconds=estimated_total_time)
 
         progress = "[{0}{1}] \n".format(
-            ''.join(["█" for i in range(math.floor(percentage / 5))]),
-            ''.join(["" for i in range(20 - math.floor(percentage / 5))])
+            ''.join(["█" for _ in range(math.floor(percentage / 5))]),
+            ''.join(["░" for _ in range(20 - math.floor(percentage / 5))])
         )
 
         tmp = progress + Translation.PROGRESS.format(
@@ -35,22 +31,21 @@ async def progress_for_pyrogram(current, total, ud_type, message, start):
         )
         try:
             await message.edit(
-              text="**{}**\n\n {}".format(
-              ud_type,
-              tmp
+                text="**{}**\n\n {}".format(
+                    ud_type,
+                    tmp
                 ),
                 parse_mode=enums.ParseMode.MARKDOWN,
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [ 
-                        InlineKeyboardButton('⛔️ Cancel', callback_data='close')
-                       ]
-                   ]
-                 )
+                            InlineKeyboardButton('⛔️ Cancel', callback_data='close')
+                        ]
+                    ]
+                )
             )
-        except:
-            pass
-
+        except Exception as e:
+            print(f"Error updating progress: {e}")
 
 def humanbytes(size):
     if not size:
@@ -62,7 +57,6 @@ def humanbytes(size):
         size /= power
         n += 1
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
-
 
 def TimeFormatter(milliseconds: int) -> str:
     seconds, milliseconds = divmod(int(milliseconds), 1000)
