@@ -9,7 +9,7 @@ tgcrypto
 yt-dlp
 olefile
 motor
-pyromod
+pyromod==1.2
 pymongo
 dnspython
 ffmpeg-python
