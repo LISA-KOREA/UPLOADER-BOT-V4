@@ -11,11 +11,11 @@ logging.basicConfig(
 
 class Config(object):
     
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "7410018846:AAGDhCfpcHZ77HhYgJBjOOSe2E71lhTal5c")
     
-    API_ID = int(os.environ.get("API_ID", ""))
+    API_ID = int(os.environ.get("API_ID", "9733031"))
     
-    API_HASH = os.environ.get("API_HASH", "")
+    API_HASH = os.environ.get("API_HASH", "c7b215795b6e8ac2ade4805e8971ad48")
     
     DOWNLOAD_LOCATION = "./DOWNLOADS"
     
@@ -41,19 +41,19 @@ class Config(object):
     
     DEF_WATER_MARK_FILE = "UploadLinkToFileBot"
     
-    DATABASE_URL = os.environ.get("DATABASE_URL", "")
+    DATABASE_URL = os.environ.get("DATABASE_URL", "mongodb+srv://huseynof:200302ss@cluster0.avarfgu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     
     SESSION_NAME = os.environ.get("SESSION_NAME", "UploadLinkToFileBot")
     
-    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
+    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002163304173"))
     
     LOGGER = logging
 
-    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "")
     
-    OWNER_ID = int(os.environ.get("OWNER_ID", "1834908260"))
+    
+    OWNER_ID = int(os.environ.get("OWNER_ID", "1893960736"))
     
     TG_MIN_FILE_SIZE = 2097152000
     
-    BOT_USERNAME = os.environ.get("BOT_USERNAME", "")
+    BOT_USERNAME = os.environ.get("BOT_USERNAME", "Hus3ynoffbot")
                                   
