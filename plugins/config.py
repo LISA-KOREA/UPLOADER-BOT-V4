@@ -11,11 +11,11 @@ logging.basicConfig(
 
 class Config(object):
     
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "7454585446:AAE7zE1rH0uXfflyeWWSUJ3MkQ0swGpZLeQ")
     
-    API_ID = int(os.environ.get("API_ID", ""))
+    API_ID = int(os.environ.get("API_ID", "24454188"))
     
-    API_HASH = os.environ.get("API_HASH", "")
+    API_HASH = os.environ.get("API_HASH", "2116d26d62de02c58e90587cfa840368")
     
     DOWNLOAD_LOCATION = "./DOWNLOADS"
     
@@ -47,11 +47,11 @@ class Config(object):
     
     LOGGER = logging
 
-    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "")
+    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "-1002245304610")
     
-    OWNER_ID = int(os.environ.get("OWNER_ID", ""))
+    OWNER_ID = int(os.environ.get("OWNER_ID", "5983253591"))
     
     TG_MIN_FILE_SIZE = 2097152000
     
-    BOT_USERNAME = os.environ.get("BOT_USERNAME", "")
+    BOT_USERNAME = os.environ.get("BOT_USERNAME", "Aakash_uploader_bot")
                                   
