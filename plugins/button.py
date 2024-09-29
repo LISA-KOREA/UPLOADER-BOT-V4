@@ -1,3 +1,5 @@
+# ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL
+
 import asyncio
 import json
 import math
