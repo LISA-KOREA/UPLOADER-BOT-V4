@@ -12,6 +12,7 @@ import asyncio
 import json
 import math
 from PIL import Image
+from plugins.thumbnail import *
 from plugins.config import Config
 from plugins.script import Translation
 from plugins.functions.forcesub import handle_force_subscribe
