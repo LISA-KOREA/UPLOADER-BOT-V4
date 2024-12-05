@@ -9,7 +9,7 @@ tgcrypto
 yt-dlp
 olefile
 motor
-pymongo
+pymongo==3.12.0
 dnspython
 ffmpeg-python
 ffmpeg
