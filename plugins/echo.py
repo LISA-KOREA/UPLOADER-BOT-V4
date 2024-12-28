@@ -112,6 +112,9 @@ async def echo(bot, update):
             "-j",
             url
         ]
+    if "instagram.com" in url:
+        command_to_exec.append("--merge-output-format")
+        command_to_exec.append("mp4")
     if youtube_dl_username is not None:
         command_to_exec.append("--username")
         command_to_exec.append(youtube_dl_username)
