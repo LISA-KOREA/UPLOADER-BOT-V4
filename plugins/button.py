@@ -126,7 +126,8 @@ async def youtube_dl_call_back(bot, update):
             "--audio-quality", youtube_dl_format,
             "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             youtube_dl_url,
-            "-o", download_directory
+            "-o", download_directory,
+            "--merge-output-format", "mp4"
         ]
     
     if Config.HTTP_PROXY:
