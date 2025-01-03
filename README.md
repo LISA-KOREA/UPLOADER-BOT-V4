@@ -21,10 +21,8 @@
 
 
 # Donation
-<b><details><summary>Click To Open 
+<b><details><summary>Click To Open Donation detelis</summary>
 
-
-Donation detelis</summary>
 We sincerely appreciate your interest in supporting our bot. Your generous contribution helps us maintain and improve the bot, ensuring it continues to provide value to everyone. Whether it’s ₹10, ₹20, ₹50, ₹100, or $2, $5, $10—every bit counts and brings us closer to our goals!
 
 🔘 Payment Methods:
