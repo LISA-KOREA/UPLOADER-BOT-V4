@@ -1,3 +1,9 @@
+# ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL | @NT_BOTS_SUPPORT | LISA-KOREA/UPLOADER-BOT-V4
+
+# [⚠️ Do not change this repo link ⚠️] :- https://github.com/LISA-KOREA/UPLOADER-BOT-V4
+
+
+
 import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -21,8 +27,28 @@ if __name__ == "__main__" :
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
-        plugins=plugins)
+        plugins=plugins
+    )
 
+
+    user = Ntbots(
+        "User",
+        session_string=Config.SESSION_STR,
+        api_id=Config.API_ID,
+        api_hash=Config.API_HASH
+    )
+
+    Ntbots.start()
     print("🎊 I AM ALIVE 🎊  • Support @NT_BOTS_SUPPORT")
-    Ntbots.run()
-
+  
+    user.start()
+    print("👤 User client is running!")
+  
+    try:
+        Ntbots.idle()
+    except KeyboardInterrupt:
+        print("Bot is shutting down...")
+      
+    user.stop()
+    Ntbots.stop()
+     
