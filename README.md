@@ -20,6 +20,38 @@
 <a href="https://www.buymeacoffee.com/lisakorean" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 
+# Donation
+<b><details><summary>Click To Open Donation detelis</summary>
+We sincerely appreciate your interest in supporting our bot. Your generous contribution helps us maintain and improve the bot, ensuring it continues to provide value to everyone. Whether it’s ₹10, ₹20, ₹50, ₹100, or $2, $5, $10—every bit counts and brings us closer to our goals!
+
+🔘 Payment Methods:
+
+- GPay / Paytm / PhonePe / PayPal / UPI / Bitcoin
+- Credit/Debit Cards: Accepted via PayPal
+- Cryptocurrencies: We also accept Bitcoin and Tron (TRC20) for secure and anonymous donations.
+
+📱 Payment Details:
+
+- UPI ID: ‘jobinjustin2002-1@okaxis‘
+- Tron (TRC20): ‘THPYzzchV2fssaw5RE4TxL8NxJpfctw46J‘
+- Payeer: ‘P1113797003‘
+- Bitcoin: ‘1DPtf1xkq7aBriCBwDHNydSfzQT2PccFmj‘
+- PayPlal: ‘https://www.paypal.me/lisajobin‘
+
+💬 Why Donate?
+
+- Sustainability: Your donations help cover server costs, maintenance, and development of new features.
+- Growth: Contributions allow us to scale up, offering better performance and more robust services.
+- Community Support: We aim to keep this bot free for everyone. Your support makes that possible.
+
+🎉 Special Thanks:
+
+As a token of our gratitude, we’ll mention our top supporters in the community (optional). Your kindness doesn’t go unnoticed!
+
+👨‍💻 Developer Contact:  
+For any questions, suggestions, or assistance, please contact [@JOBIN_JUSTIN](https://t.me/JOBIN_JUSTIN). We're here to help and appreciate your feedback!
+</b>
+</details>
 
 ## How To Deploy Heroku
 
