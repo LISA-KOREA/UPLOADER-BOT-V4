@@ -21,7 +21,10 @@
 
 
 # Donation
-<b><details><summary>Click To Open Donation detelis</summary>
+<b><details><summary>Click To Open 
+
+
+Donation detelis</summary>
 We sincerely appreciate your interest in supporting our bot. Your generous contribution helps us maintain and improve the bot, ensuring it continues to provide value to everyone. Whether it’s ₹10, ₹20, ₹50, ₹100, or $2, $5, $10—every bit counts and brings us closer to our goals!
 
 🔘 Payment Methods:
@@ -32,11 +35,11 @@ We sincerely appreciate your interest in supporting our bot. Your generous contr
 
 📱 Payment Details:
 
-- UPI ID: ‘jobinjustin2002-1@okaxis‘
-- Tron (TRC20): ‘THPYzzchV2fssaw5RE4TxL8NxJpfctw46J‘
-- Payeer: ‘P1113797003‘
-- Bitcoin: ‘1DPtf1xkq7aBriCBwDHNydSfzQT2PccFmj‘
-- PayPlal: ‘https://www.paypal.me/lisajobin‘
+- UPI ID: `jobinjustin2002-1@okaxis`
+- Tron (TRC20): `THPYzzchV2fssaw5RE4TxL8NxJpfctw46J`
+- Payeer: `P1113797003`
+- Bitcoin: `1DPtf1xkq7aBriCBwDHNydSfzQT2PccFmj`
+- PayPlal: [Click to pay](https://www.paypal.me/lisajobin)
 
 💬 Why Donate?
 
