@@ -11,10 +11,8 @@ logger = logging.getLogger(__name__)
 
 import os
 from plugins.config import Config
+from pyrogram import filters, Client, idle
 
-from pyrogram import Client as Ntbots
-from pyrogram import Client
-from pyrogram import filters
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 
@@ -23,7 +21,7 @@ if __name__ == "__main__" :
     if not os.path.isdir(Config.DOWNLOAD_LOCATION):
         os.makedirs(Config.DOWNLOAD_LOCATION)
     plugins = dict(root="plugins")
-    Ntbots = Ntbots(
+    bot = Client(
         "URL UPLOADER BOT",
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
@@ -39,17 +37,17 @@ if __name__ == "__main__" :
         api_hash=Config.API_HASH
     )
 
-    Ntbots.start()
+    bot.start()
     print("🎊 I AM ALIVE 🎊  • Support @NT_BOTS_SUPPORT")
   
     user.start()
     print("👤 User client is running!")
   
     try:
-        Ntbots.idle()
+        Client.idle()
     except KeyboardInterrupt:
         print("Bot is shutting down...")
       
     user.stop()
-    Ntbots.stop()
+    bot.stop()
      
