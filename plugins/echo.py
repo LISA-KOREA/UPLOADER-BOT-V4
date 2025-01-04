@@ -101,7 +101,7 @@ async def echo(bot, update):
             "--no-warnings",
             "--youtube-skip-hls-manifest",
             "-j",
-            "--cookiefile", "cookies.txt"
+            #"--cookiefile", "cookies.txt"
             url,
             "--proxy", Config.HTTP_PROXY
         ]
@@ -109,7 +109,7 @@ async def echo(bot, update):
         command_to_exec = [
             "yt-dlp",
             "--no-warnings",
-            "--cookiefile", "cookies.txt"
+           # "--cookiefile", "cookies.txt"
             "--youtube-skip-hls-manifest",
             "-j",
             url
