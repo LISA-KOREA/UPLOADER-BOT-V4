@@ -13,6 +13,7 @@ import os
 from plugins.config import Config
 
 from pyrogram import Client as Ntbots
+from pyrogram import Client
 from pyrogram import filters
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
