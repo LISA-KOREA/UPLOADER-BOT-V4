@@ -19,6 +19,9 @@ from plugins.database.database import db
 from PIL import Image
 from plugins.functions.ran_text import random_char
 
+
+cookies_file = "cookies.txt"
+
 # Set up logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -113,7 +116,7 @@ async def youtube_dl_call_back(bot, update):
         "--hls-prefer-ffmpeg",
         "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
         youtube_dl_url,
-        #"--cookiefile", "cookies.txt"
+        "--cookies", cookies_file,
         "-o", download_directory,
         "--merge-output-format", "mp4"
     ]
@@ -127,7 +130,7 @@ async def youtube_dl_call_back(bot, update):
             "--extract-audio",
             "--audio-format", youtube_dl_ext,
             "--audio-quality", youtube_dl_format,
-            #"--cookiefile", "cookies.txt"
+            "--cookies", cookies_file,
             "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             youtube_dl_url,
             "-o", download_directory
