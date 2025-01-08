@@ -27,6 +27,8 @@ class Config(object):
     SESSION_STR = ""
     
     FREE_USER_MAX_FILE_SIZE = 2097152000
+
+    MAX_SPLIT_SIZE = 4187407334
     
     CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", 128))
     
