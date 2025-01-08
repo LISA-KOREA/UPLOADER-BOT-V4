@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 # Function to split a file into chunks
-def split_file(file_path, chunk_size=Config.TG_MAX_FILE_SIZE):
+def split_file(file_path, chunk_size=Config.MAX_SPLIT_SIZE):
     file_size = os.stat(file_path).st_size
     if file_size <= chunk_size:
         return [file_path]
@@ -97,7 +97,7 @@ async def ddl_call_back(bot, update):
         await update.message.edit_caption(caption=Translation.UPLOAD_START, parse_mode=enums.ParseMode.HTML)
 
         # Check file size
-        file_size = Config.TG_MAX_FILE_SIZE + 1
+        file_size = Config.MAX_SPLIT_SIZE + 1
         try:
             file_size = os.stat(download_directory).st_size
         except FileNotFoundError as exc:
@@ -105,7 +105,7 @@ async def ddl_call_back(bot, update):
             file_size = os.stat(download_directory).st_size
 
         # Split the file if it's too large
-        if file_size > Config.TG_MAX_FILE_SIZE:
+        if file_size > Config.MAX_SPLIT_SIZE:
             chunk_files = split_file(download_directory)
             for chunk in chunk_files:
                 # Upload each chunk as a document
