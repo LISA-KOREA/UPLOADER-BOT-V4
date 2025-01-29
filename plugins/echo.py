@@ -184,7 +184,17 @@ async def echo(bot, update):
                     format_string = formats.get("format")
                 format_ext = formats.get("ext")
                 approx_file_size = ""
-                if "filesize" in formats:
+                file_size = formats.get("filesize", 0)
+                if file_size and file_size > MAX_FILE_SIZE:
+                    await bot.send_message(
+                        chat_id=update.chat.id,
+                        text="🚫 This bot does not support files larger than **2000MB**.\n\n"
+                             "🔄 Use **@UploaderXNTBot** instead for large files.",
+                        disable_web_page_preview=True,
+                        reply_to_message_id=update.id
+                    )
+                    return
+                if file_size:
                     approx_file_size = humanbytes(formats["filesize"])
                 cb_string_video = "{}|{}|{}|{}".format(
                     "video", format_id, format_ext, randem)
