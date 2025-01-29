@@ -36,7 +36,7 @@ class Config(object):
     
     HTTP_PROXY = os.environ.get("HTTP_PROXY", "")
     
-    OUO_IO_API_KEY = ""
+    DEF_WATER_MARK_FILE = "@UploaderXNTBot"
     
     MAX_MESSAGE_LENGTH = 4096
     
