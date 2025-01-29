@@ -151,7 +151,7 @@ async def echo(bot, update):
         if "This video is only available for registered users." in error_message:
             error_message += Translation.SET_CUSTOM_USERNAME_PASSWORD
         await chk.delete()
-        time.sleep(1)
+        time.sleep(10)
         await bot.send_message(
             chat_id=update.chat.id,
             text=Translation.NO_VOID_FORMAT_FOUND.format(str(error_message)),
@@ -197,7 +197,7 @@ async def echo(bot, update):
                             callback_data=(cb_string_video).encode("UTF-8")
                         )
                     ]
-                    """if duration is not None:
+                    if duration is not None:
                         cb_string_video_message = "{}|{}|{}|{}|{}".format(
                             "vm", format_id, format_ext, ran, randem)
                         ikeyboard.append(
@@ -206,7 +206,7 @@ async def echo(bot, update):
                                 callback_data=(
                                     cb_string_video_message).encode("UTF-8")
                             )
-                        )"""
+                        )
                 else:
                     # special weird case :\
                     ikeyboard = [
