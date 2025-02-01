@@ -18,22 +18,64 @@ logger = logging.getLogger(__name__)
 @Client.on_callback_query()
 async def button(bot, update):
     if update.data == "home":
-        await update.message.edit_text(
+        await update.message.edit(
             text=Translation.START_TEXT.format(update.from_user.mention),
             reply_markup=Translation.START_BUTTONS,
-            disable_web_page_preview=True
         )
     elif update.data == "help":
-        await update.message.edit_text(
+        await update.message.edit(
             text=Translation.HELP_TEXT,
             reply_markup=Translation.HELP_BUTTONS,
-            disable_web_page_preview=True
+        )
+    elif update.data == "plans":
+        await update.message.edit(
+            text=Translation.UPGRADE_TEXT,
+            reply_markup=Translation.PLANS_BUTTONS,
         )
     elif update.data == "about":
-        await update.message.edit_text(
+        await update.message.edit(
             text=Translation.ABOUT_TEXT,
             reply_markup=Translation.ABOUT_BUTTONS,
-            disable_web_page_preview=True
+        )
+    elif "refreshForceSub" in update.data:
+        if Config.UPDATES_CHANNEL:
+            if str(Config.UPDATES_CHANNEL).startswith("-100"):
+                channel_chat_id = int(Config.UPDATES_CHANNEL)
+            else:
+                channel_chat_id = Config.UPDATES_CHANNEL
+            try:
+                user = await bot.get_chat_member(channel_chat_id, update.message.chat.id)
+                if user.status == "kicked":
+                    await update.message.edit(
+                        text="Sorry Sir, You are Banned. Contact My [Support Group](https://t.me/NT_BOTS_SUPPORT)",
+                        disable_web_page_preview=True
+                    )
+                    return
+            except UserNotParticipant:
+                chat_id = channel_chat_id
+                await update.message.edit(
+                    text="**I like Your Smartness But Don't Be Oversmart! 😑**\n\n",
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link)
+                            ],
+                            [
+                                InlineKeyboardButton("🔄 Refresh 🔄", callback_data="refreshForceSub")
+                            ]
+                        ]
+                    )
+                )
+                return
+            except Exception:
+                await update.message.edit(
+                    text="Something Went Wrong. Contact My [Support Group](https://t.me/NT_BOTS_SUPPORT)",
+                    disable_web_page_preview=True
+                )
+                return
+        await update.message.edit(
+            text=Translation.START_TEXT.format(update.from_user.mention),
+            reply_markup=Translation.START_BUTTONS,
         )
     elif update.data == "OpenSettings":
         await update.answer()
@@ -54,11 +96,29 @@ async def button(bot, update):
         await update.answer("Okay, I deleted your custom thumbnail. Now I will apply default thumbnail.", show_alert=True)
         await update.message.delete(True)
     elif update.data == "setThumbnail":
-        await update.message.edit_text(
+        await update.message.edit(
             text=Translation.TEXT,
             reply_markup=Translation.BUTTONS,
             disable_web_page_preview=True
         )
+
+    elif update.data == "triggerGenSS":
+        await update.answer()
+        generate_ss = await db.get_generate_ss(update.from_user.id)
+        if generate_ss:
+            await db.set_generate_ss(update.from_user.id, False)
+        else:
+            await db.set_generate_ss(update.from_user.id, True)
+        await OpenSettings(update.message)
+
+    elif update.data == "triggerGenSample":
+        await update.answer()
+        generate_sample_video = await db.get_generate_sample_video(update.from_user.id)
+        if generate_sample_video:
+            await db.set_generate_sample_video(update.from_user.id, False)
+        else:
+            await db.set_generate_sample_video(update.from_user.id, True)
+        await OpenSettings(update.message)
 
     elif update.data == "triggerUploadMode":
         await update.answer()
@@ -78,4 +138,3 @@ async def button(bot, update):
 
     else:
         await update.message.delete()
-
