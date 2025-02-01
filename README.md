@@ -178,7 +178,7 @@ Check How To Make MONGODB URL or [YouTube](https://youtu.be/VudXkbirhM8?feature=
 
 * [SpEcHlDe](https://github.com/SpEcHiDe)
 * [Clinton Abraham 🦊](https://github.com/Clinton-Abraham)
-* [LISA 👑]
+* [LISA 👑](https://github.com/LISA-KOREA)
 * [VJ](https://github.com/VJBots)
 
 
