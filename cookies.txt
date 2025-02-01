@@ -1,19 +1,215 @@
 # Add your cookies youtube 
-name;value;domain;path;expirationDate;sameSite;storeId;hostOnly;httpOnly;secure;session
-__Secure-1PAPISID;oz6cJWGy09AG17GG/ABzaEUO07xT_Goxm9;.youtube.com;/;;unspecified;0;false;false;true;true
-__Secure-1PSID;g.a000tAiSSUK9pvY-zayQQ6_K0PDyqeDHeZIYmZtV8Ui11rVSRVLO2zZ3UfGur2n7zOCpySg4hAACgYKAUYSARUSFQHGX2MiH9Jo7QmyomZs45gC591qkhoVAUF8yKoqdJBdKENi-90xttrFmphc0076;.youtube.com;/;;unspecified;0;false;true;true;true
-__Secure-1PSIDCC;AKEyXzUJsxLFT54iFq1vPiIGl89YzhYEwz-ymQ6tHstDcAOlh78K0YQmWqAgqV8QDieTYuiu;.youtube.com;/;1769928446.021905;unspecified;0;false;true;true;false
-__Secure-1PSIDTS;sidts-CjEBmiPuTU8UCxoc7zZbteylrLm_C2j7O6fngARcwre1DXeF9dT8rO8k_zlAurL8BSHLEAA;.youtube.com;/;1769928289.038923;unspecified;0;false;true;true;false
-__Secure-3PAPISID;oz6cJWGy09AG17GG/ABzaEUO07xT_Goxm9;.youtube.com;/;;no_restriction;0;false;false;true;true
-__Secure-3PSID;g.a000tAiSSUK9pvY-zayQQ6_K0PDyqeDHeZIYmZtV8Ui11rVSRVLO30EYsuFGPbOqvw_tjlCbcgACgYKAQQSARUSFQHGX2MiTmad5GygjI-S0ozRoGHm8RoVAUF8yKo3LA36-3bUfuSUbbyMjeis0076;.youtube.com;/;;no_restriction;0;false;true;true;true
-__Secure-3PSIDCC;AKEyXzVH5mkmg-cvpEJ7msPZdts_cDXAl_wUIR-zEYsofDYJISY4F3bbausVmXILNtHz4G0u;.youtube.com;/;1769928446.022077;no_restriction;0;false;true;true;false
-__Secure-3PSIDTS;sidts-CjEBmiPuTU8UCxoc7zZbteylrLm_C2j7O6fngARcwre1DXeF9dT8rO8k_zlAurL8BSHLEAA;.youtube.com;/;1769928289.039441;no_restriction;0;false;true;true;false
-APISID;jWGsWamVDI2tAW5O/Ac48N5FTDV2JadRqV;.youtube.com;/;;unspecified;0;false;false;false;true
-GPS;1;.youtube.com;/;1738393745.692989;unspecified;0;false;true;true;false
-HSID;A1yzgfx8_Rcl6n8C5;.youtube.com;/;;unspecified;0;false;true;false;true
-LOGIN_INFO;AFmmF2swRQIgMAi3e9lbJUKnfpP7uf1vB_F55dcGMO5fRIOCFFBhR3cCIQCGNfdQZvbm7i676vvY26tDS5kvvJNUtoYpeEfBnuip0A:QUQ3MjNmdzRDWEhhQjJ1T1BkWFM4R2g3LVFENU9LdmNCY09BWXZsN0ZKNW5KcXd4Q2JjMkMxNERKSVdIRHdQVjZLcnBjbmgyQXA3RHE1RGZ6cllEak5rSHQyTXpYTHVVZVA2N2w4RVpVT19tQWVRUENPaGtJclA0d1ZmT2tKRGxTTGNEZ3FBWGkwNEQ1RllySnFBYjYyNlZKcFdycm9jRUNn;.youtube.com;/;1772952289.6464;no_restriction;0;false;true;true;false
-PREF;tz=Asia.Calcutta;.youtube.com;/;1772952289.921096;unspecified;0;false;false;true;false
-SAPISID;oz6cJWGy09AG17GG/ABzaEUO07xT_Goxm9;.youtube.com;/;;unspecified;0;false;false;true;true
-SID;g.a000tAiSSUK9pvY-zayQQ6_K0PDyqeDHeZIYmZtV8Ui11rVSRVLO16vP0jVkh8JLDWFLDDhfzwACgYKAUMSARUSFQHGX2MiN4ZYAD21qxkKcIyCJP8gthoVAUF8yKp3yMng9O27H0r-oPAHuHDD0076;.youtube.com;/;;unspecified;0;false;false;false;true
-SIDCC;AKEyXzUN1X368nSOdPBWTPQXvXwetTJMsVMnBFdVvjje8e1YmyWQ51wnRIl849Op4Y2lSk8JAg;.youtube.com;/;1769928446.021612;unspecified;0;false;false;false;false
-SSID;AE355o2QOEBCv541C;.youtube.com;/;;unspecified;0;false;true;true;true
+[
+	{
+		"name": "__Secure-1PAPISID",
+		"value": "oz6cJWGy09AG17GG/ABzaEUO07xT_Goxm9",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": false,
+		"secure": true,
+		"session": true
+	},
+	{
+		"name": "__Secure-1PSID",
+		"value": "g.a000tAiSSUK9pvY-zayQQ6_K0PDyqeDHeZIYmZtV8Ui11rVSRVLO2zZ3UfGur2n7zOCpySg4hAACgYKAUYSARUSFQHGX2MiH9Jo7QmyomZs45gC591qkhoVAUF8yKoqdJBdKENi-90xttrFmphc0076",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": true
+	},
+	{
+		"name": "__Secure-1PSIDCC",
+		"value": "AKEyXzUJsxLFT54iFq1vPiIGl89YzhYEwz-ymQ6tHstDcAOlh78K0YQmWqAgqV8QDieTYuiu",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1769928446.021905,
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": false
+	},
+	{
+		"name": "__Secure-1PSIDTS",
+		"value": "sidts-CjEBmiPuTU8UCxoc7zZbteylrLm_C2j7O6fngARcwre1DXeF9dT8rO8k_zlAurL8BSHLEAA",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1769928289.038923,
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": false
+	},
+	{
+		"name": "__Secure-3PAPISID",
+		"value": "oz6cJWGy09AG17GG/ABzaEUO07xT_Goxm9",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "no_restriction",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": false,
+		"secure": true,
+		"session": true
+	},
+	{
+		"name": "__Secure-3PSID",
+		"value": "g.a000tAiSSUK9pvY-zayQQ6_K0PDyqeDHeZIYmZtV8Ui11rVSRVLO30EYsuFGPbOqvw_tjlCbcgACgYKAQQSARUSFQHGX2MiTmad5GygjI-S0ozRoGHm8RoVAUF8yKo3LA36-3bUfuSUbbyMjeis0076",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "no_restriction",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": true
+	},
+	{
+		"name": "__Secure-3PSIDCC",
+		"value": "AKEyXzVH5mkmg-cvpEJ7msPZdts_cDXAl_wUIR-zEYsofDYJISY4F3bbausVmXILNtHz4G0u",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1769928446.022077,
+		"sameSite": "no_restriction",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": false
+	},
+	{
+		"name": "__Secure-3PSIDTS",
+		"value": "sidts-CjEBmiPuTU8UCxoc7zZbteylrLm_C2j7O6fngARcwre1DXeF9dT8rO8k_zlAurL8BSHLEAA",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1769928289.039441,
+		"sameSite": "no_restriction",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": false
+	},
+	{
+		"name": "APISID",
+		"value": "jWGsWamVDI2tAW5O/Ac48N5FTDV2JadRqV",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": false,
+		"secure": false,
+		"session": true
+	},
+	{
+		"name": "GPS",
+		"value": "1",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1738393745.692989,
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": false
+	},
+	{
+		"name": "HSID",
+		"value": "A1yzgfx8_Rcl6n8C5",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": false,
+		"session": true
+	},
+	{
+		"name": "LOGIN_INFO",
+		"value": "AFmmF2swRQIgMAi3e9lbJUKnfpP7uf1vB_F55dcGMO5fRIOCFFBhR3cCIQCGNfdQZvbm7i676vvY26tDS5kvvJNUtoYpeEfBnuip0A:QUQ3MjNmdzRDWEhhQjJ1T1BkWFM4R2g3LVFENU9LdmNCY09BWXZsN0ZKNW5KcXd4Q2JjMkMxNERKSVdIRHdQVjZLcnBjbmgyQXA3RHE1RGZ6cllEak5rSHQyTXpYTHVVZVA2N2w4RVpVT19tQWVRUENPaGtJclA0d1ZmT2tKRGxTTGNEZ3FBWGkwNEQ1RllySnFBYjYyNlZKcFdycm9jRUNn",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1772952289.6464,
+		"sameSite": "no_restriction",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": false
+	},
+	{
+		"name": "PREF",
+		"value": "tz=Asia.Calcutta",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1772952289.921096,
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": false,
+		"secure": true,
+		"session": false
+	},
+	{
+		"name": "SAPISID",
+		"value": "oz6cJWGy09AG17GG/ABzaEUO07xT_Goxm9",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": false,
+		"secure": true,
+		"session": true
+	},
+	{
+		"name": "SID",
+		"value": "g.a000tAiSSUK9pvY-zayQQ6_K0PDyqeDHeZIYmZtV8Ui11rVSRVLO16vP0jVkh8JLDWFLDDhfzwACgYKAUMSARUSFQHGX2MiN4ZYAD21qxkKcIyCJP8gthoVAUF8yKp3yMng9O27H0r-oPAHuHDD0076",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": false,
+		"secure": false,
+		"session": true
+	},
+	{
+		"name": "SIDCC",
+		"value": "AKEyXzUN1X368nSOdPBWTPQXvXwetTJMsVMnBFdVvjje8e1YmyWQ51wnRIl849Op4Y2lSk8JAg",
+		"domain": ".youtube.com",
+		"path": "/",
+		"expirationDate": 1769928446.021612,
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": false,
+		"secure": false,
+		"session": false
+	},
+	{
+		"name": "SSID",
+		"value": "AE355o2QOEBCv541C",
+		"domain": ".youtube.com",
+		"path": "/",
+		"sameSite": "unspecified",
+		"storeId": "0",
+		"hostOnly": false,
+		"httpOnly": true,
+		"secure": true,
+		"session": true
+	}
+]
