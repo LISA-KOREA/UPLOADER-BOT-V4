@@ -10,16 +10,16 @@ from asyncio import TimeoutError
 from pyrogram.types import Message 
 from pyrogram.errors import MessageNotModified
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery, ForceReply
-from Uploader.config import Config
-from Uploader.script import Translation
+from plugins.config import Config
+from plugins.script import Translation
 from pyrogram import Client, filters
-from Uploader.database.add import AddUser
+from plugins.database.add import AddUser
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from Uploader.database.database import db
-from Uploader.functions.forcesub import handle_force_subscribe
-from Uploader.settings.settings import OpenSettings
-from Uploader.config import *
-from Uploader.functions.verify import verify_user, check_token
+from plugins.database.database import db
+from plugins.functions.forcesub import handle_force_subscribe
+from plugins.settings.settings import OpenSettings
+from plugins.config import *
+from plugins.functions.verify import verify_user, check_token
 from pyrogram import types, errors
 
 
