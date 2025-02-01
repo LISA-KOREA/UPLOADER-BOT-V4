@@ -6,7 +6,7 @@
 
 
 import os
-from Uploader.config import Config
+from plugins.config import Config
 from pyrogram import Client
 
 if __name__ == "__main__" :
