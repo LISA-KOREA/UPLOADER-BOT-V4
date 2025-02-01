@@ -172,10 +172,9 @@ Check How To Make MONGODB URL or [YouTube](https://youtu.be/VudXkbirhM8?feature=
 - URL Uploader Bot : [Uploader Bot 🚀](https://t.me/UploadLinkToFileBot)
 - Its Me : [Lisa 👑](https://t.me/LISA_FAN_LK)
 
-### Credits, and Thanks to ❤️
+### Credits and Thanks to ❤️
 
 * [SpEcHlDe](https://github.com/SpEcHiDe)
 * [Clinton Abraham 🦊](https://github.com/Clinton-Abraham)
-* [LISA 👑](https://github.com/LISA-KOREA)
-* [VJ](https://github.com/VJBots)
+* [Tech VJ](https://github.com/VJBots)
 
