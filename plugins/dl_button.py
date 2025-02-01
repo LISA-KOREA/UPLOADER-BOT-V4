@@ -12,12 +12,12 @@ import os
 import shutil
 import time
 from datetime import datetime
-from Uploader.config import Config
-from Uploader.script import Translation
-from Uploader.thumbnail import *
-from Uploader.database.database import db
+from plugins.config import Config
+from plugins.script import Translation
+from plugins.thumbnail import *
+from plugins.database.database import db
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
-from Uploader.functions.display_progress import progress_for_pyrogram, humanbytes, TimeFormatter
+from plugins.functions.display_progress import progress_for_pyrogram, humanbytes, TimeFormatter
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from PIL import Image
