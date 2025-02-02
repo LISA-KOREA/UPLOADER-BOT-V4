@@ -15,21 +15,32 @@ jobs:
       - name: Post a welcome comment
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}  # Add authentication
           script: |
-            const eventType = context.payload.issue ? "issue" : "pull request";
+            const payload = context.payload;
+            let eventType = "";
+            let issueNumber = null;
             let message = "";
 
-            if (eventType === "issue") {
+            if (payload.issue) {
+              eventType = "issue";
+              issueNumber = payload.issue.number;
               message = "🎉 Thanks for opening an issue! Our team will review it soon.";
-            } else if (eventType === "pull request") {
+            } else if (payload.pull_request) {
+              eventType = "pull request";
+              issueNumber = payload.pull_request.number;
               message = "🚀 Thanks for your pull request! We'll review and merge if everything looks good.";
-            } else {
+            } else if (payload.comment) {
+              eventType = "comment";
+              issueNumber = payload.issue ? payload.issue.number : payload.pull_request.number;
               message = "💬 Thanks for your comment! We'll take it into account.";
             }
 
-            github.rest.issues.createComment({
-              issue_number: context.payload.issue ? context.payload.issue.number : context.payload.pull_request.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: message
-            });
+            if (issueNumber) {
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: message
+              });
+            }
