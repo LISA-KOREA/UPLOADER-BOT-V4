@@ -8,6 +8,10 @@ on:
   issue_comment:
     types: [created]
 
+permissions:  # ✅ Add this section to grant necessary permissions
+  issues: write
+  pull-requests: write
+
 jobs:
   comment:
     runs-on: ubuntu-latest
@@ -15,7 +19,7 @@ jobs:
       - name: Post a welcome comment
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}  # Authentication added
+          github-token: ${{ secrets.GITHUB_TOKEN }}  # Ensure token is passed
           script: |
             const payload = context.payload;
             let eventType = "";
