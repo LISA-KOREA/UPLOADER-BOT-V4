@@ -51,6 +51,22 @@
     "BOT_USERNAME": {
       "description": "Your Bot Username Without @",
       "value": ""
+    },
+    "TRUE_OR_FALSE": {
+      "description": "Set False off else True for  Shortlink",
+      "value": "False"
+    },
+    "SHORT_DOMAIN": {
+      "description": "Add your shortlink domain like shortlink.com",
+      "value": ""
+    },
+    "SHORT_API": {
+      "description": "Add your shortner api",
+      "value": ""
+    },
+    "VERIFICATION": {
+      "description": "Add your verification video link",
+      "value": ""
     }
   },
   "addons": [
