@@ -1,0 +1,35 @@
+name: Auto-Reply Bot
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post a welcome comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const eventType = context.payload.issue ? "issue" : "pull request";
+            let message = "";
+
+            if (eventType === "issue") {
+              message = "🎉 Thanks for opening an issue! Our team will review it soon.";
+            } else if (eventType === "pull request") {
+              message = "🚀 Thanks for your pull request! We'll review and merge if everything looks good.";
+            } else {
+              message = "💬 Thanks for your comment! We'll take it into account.";
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.payload.issue ? context.payload.issue.number : context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
