@@ -9,7 +9,7 @@ import os
 from datetime import datetime, date
 import string
 from typing import List
-from Uploader.database.database import db
+from plugins.database.database import db
 import requests
 import aiohttp
 import json
