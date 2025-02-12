@@ -3,8 +3,6 @@
 # [⚠️ Do not change this repo link ⚠️] :- https://github.com/LISA-KOREA/UPLOADER-BOT-V4
 
 
-
-
 import os
 from plugins.config import Config
 from pyrogram import Client
