@@ -16,9 +16,7 @@ async def handle_force_subscribe(bot, message):
             await bot.send_message(
                 chat_id=message.from_user.id,
                 text="Sorry Sir, You are Banned. Contact My Support Group.",
-                
                 disable_web_page_preview=True,
-                #reply_to_message_id=message.id,
             )
             return 400
     except UserNotParticipant:
@@ -42,8 +40,6 @@ async def handle_force_subscribe(bot, message):
         await bot.send_message(
             chat_id=message.from_user.id,
             text="Something Went Wrong. Contact My Support Group.",
-            
             disable_web_page_preview=True,
-            #reply_to_message_id=message.id,
         )
         return 400
