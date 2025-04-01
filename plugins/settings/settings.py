@@ -31,7 +31,6 @@ async def OpenSettings(m: "types.Message"):
             text="**CURRENT SETTINGS 👇**",
             reply_markup=types.InlineKeyboardMarkup(buttons_markup),
             disable_web_page_preview=True,
-            #parse_mode=enums.ParseMode.MARKDOWN
         )
     except errors.MessageNotModified: pass
     except errors.FloodWait as e:
