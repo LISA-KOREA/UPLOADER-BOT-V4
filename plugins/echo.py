@@ -44,7 +44,7 @@ async def echo(bot, update):
             ]]
             await update.reply_text(
                 text="<b>Pʟᴇᴀsᴇ Vᴇʀɪꜰʏ Fɪʀsᴛ Tᴏ Usᴇ Mᴇ</b>",
-                protect_content=True,
+                #protect_content=True,
                 reply_markup=InlineKeyboardMarkup(button)
             )
             return
