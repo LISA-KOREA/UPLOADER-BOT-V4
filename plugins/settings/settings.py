@@ -1,9 +1,10 @@
-
-
 import asyncio
-from pyrogram import types, errors, enums
+from pyrogram import types, errors, filters
+from pyrogram.types import Message
 from plugins.config import Config
 from plugins.database.database import db
+from plugins.database.add import AddUser
+from pyrogram import Client
 
 async def OpenSettings(m: "types.Message"):
     usr_id = m.chat.id
@@ -12,27 +13,24 @@ async def OpenSettings(m: "types.Message"):
         await m.edit("Failed to fetch your data from database!")
         return
     upload_as_doc = user_data.get("upload_as_doc", False)
-    caption = user_data.get("caption", None)
-    apply_caption = user_data.get("apply_caption", True)
     thumbnail = user_data.get("thumbnail", None)
     buttons_markup = [
-        [types.InlineKeyboardButton(f"ᴜᴘʟᴏᴀᴅ ᴀs {'🎥 ᴠɪᴅᴇᴏ' if upload_as_doc else '🗃️ Fɪʟᴇ'}",
+        [types.InlineKeyboardButton(f" {'📹 VIDEO' if upload_as_doc else '📁 DOCUMENT'}",
                                     callback_data="triggerUploadMode")],
-        [types.InlineKeyboardButton(f"{'ᴄʜᴀɴɢᴇ' if thumbnail else '🌃 sᴇᴛ'} ᴛʜᴜᴍʙɴᴀɪʟ",
+        [types.InlineKeyboardButton(f"{'🏞 CHANGE' if thumbnail else '🏞 SET'} THUMBNAIL",
                                     callback_data="setThumbnail")]
     ]
     if thumbnail:
-        buttons_markup.append([types.InlineKeyboardButton("🌆 sʜᴏᴡ ᴛʜᴜᴍʙɴᴀɪʟ",
+        buttons_markup.append([types.InlineKeyboardButton("🏞 SHOW THUMBNAIL",
                                                           callback_data="showThumbnail")])
-    buttons_markup.append([types.InlineKeyboardButton("♨️ ᴄʟᴏsᴇ",
-                                                      callback_data="close")])
+    buttons_markup.append([types.InlineKeyboardButton("🔙 BACK", 
+                                                      callback_data="home")])
 
     try:
         await m.edit(
-            text="**ʜᴇʀᴇ ʏᴏᴜ ᴄᴀɴ sᴇᴛᴜᴘ ʏᴏᴜʀ sᴇᴛᴛɪɴɢs**",
+            text="**CURRENT SETTINGS 👇**",
             reply_markup=types.InlineKeyboardMarkup(buttons_markup),
             disable_web_page_preview=True,
-            parse_mode=enums.ParseMode.MARKDOWN
         )
     except errors.MessageNotModified: pass
     except errors.FloodWait as e:
@@ -42,3 +40,9 @@ async def OpenSettings(m: "types.Message"):
         Config.LOGGER.getLogger(__name__).error(err)
 
 
+
+@Client.on_message(filters.private & filters.command("settings"))
+async def settings_handler(bot: Client, m: Message):
+    await AddUser(bot, m)
+    editable = await m.reply_text("**Checking...**", quote=True)
+    await OpenSettings(editable)

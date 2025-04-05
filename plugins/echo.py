@@ -1,5 +1,4 @@
-# ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL
-
+# ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL | TG-SORRY
 
 
 import logging
@@ -9,11 +8,15 @@ logger = logging.getLogger(__name__)
 import requests, urllib.parse, filetype, os, time, shutil, tldextract, asyncio, json, math
 from PIL import Image
 from plugins.config import Config
-import time
 from plugins.script import Translation
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 from pyrogram import filters
-from pyrogram import Client, enums
+import os
+import time
+import random
+from pyrogram import enums
+from pyrogram import Client
+from plugins.functions.verify import verify_user, check_token, check_verification, get_token
 from plugins.functions.forcesub import handle_force_subscribe
 from plugins.functions.display_progress import humanbytes
 from plugins.functions.help_uploadbot import DownLoadFile
@@ -23,21 +26,35 @@ from hachoir.parser import createParser
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import UserNotParticipant
 from plugins.functions.ran_text import random_char
-from plugins.database.add import add_user_to_database
+from plugins.database.database import db
+from plugins.database.add import AddUser
 from pyrogram.types import Thumbnail
 
 
-cookies_file = "cookies.txt"
+
 
 @Client.on_message(filters.private & filters.regex(pattern=".*http.*"))
 async def echo(bot, update):
+    if update.from_user.id != Config.OWNER_ID:  
+        if not await check_verification(bot, update.from_user.id) and Config.TRUE_OR_FALSE:
+            button = [[
+                InlineKeyboardButton("✓⃝ Vᴇʀɪꜰʏ ✓⃝", url=await get_token(bot, update.from_user.id, f"https://telegram.me/{Config.BOT_USERNAME}?start="))
+                ],[
+                InlineKeyboardButton("🔆 Wᴀᴛᴄʜ Hᴏᴡ Tᴏ Vᴇʀɪꜰʏ 🔆", url=f"{Config.VERIFICATION}")
+            ]]
+            await update.reply_text(
+                text="<b>Pʟᴇᴀsᴇ Vᴇʀɪꜰʏ Fɪʀsᴛ Tᴏ Usᴇ Mᴇ</b>",
+                #protect_content=True,
+                reply_markup=InlineKeyboardMarkup(button)
+            )
+            return
     if Config.LOG_CHANNEL:
         try:
             log_message = await update.forward(Config.LOG_CHANNEL)
             log_info = "Message Sender Information\n"
             log_info += "\nFirst Name: " + update.from_user.first_name
             log_info += "\nUser ID: " + str(update.from_user.id)
-            log_info += "\nUsername: @" + update.from_user.username if update.from_user.username else ""
+            log_info += "\nUsername: @" + (update.from_user.username if update.from_user.username else "")
             log_info += "\nUser Link: " + update.from_user.mention
             await log_message.reply_text(
                 text=log_info,
@@ -48,12 +65,13 @@ async def echo(bot, update):
             print(error)
     if not update.from_user:
         return await update.reply_text("I don't know about you sar :(")
-    await add_user_to_database(bot, update)
-
+    await AddUser(bot, update)
     if Config.UPDATES_CHANNEL:
-      fsub = await handle_force_subscribe(bot, update)
-      if fsub == 400:
-        return
+        fsub = await handle_force_subscribe(bot, update)
+        if fsub == 400:
+            return
+
+
     logger.info(update.from_user)
     url = update.text
     youtube_dl_username = None
@@ -102,9 +120,9 @@ async def echo(bot, update):
         command_to_exec = [
             "yt-dlp",
             "--no-warnings",
-            "--youtube-skip-hls-manifest",
+            "--allow-dynamic-mpd",
+            "--no-check-certificate",
             "-j",
-            "--cookies", cookies_file
             url,
             "--proxy", Config.HTTP_PROXY
         ]
@@ -112,14 +130,14 @@ async def echo(bot, update):
         command_to_exec = [
             "yt-dlp",
             "--no-warnings",
-            "--cookies", cookies_file
-            "--youtube-skip-hls-manifest",
+            "--allow-dynamic-mpd",
+            "--no-check-certificate",
             "-j",
-            url
+            url,
+            "--geo-bypass-country",
+            "IN"
+
         ]
-    if "instagram.com" in url:
-        command_to_exec.append("--merge-output-format")
-        command_to_exec.append("mp4")
     if youtube_dl_username is not None:
         command_to_exec.append("--username")
         command_to_exec.append(youtube_dl_username)
@@ -136,7 +154,6 @@ async def echo(bot, update):
           )
     process = await asyncio.create_subprocess_exec(
         *command_to_exec,
-        # stdout must a pipe to be accessible as process.stdout
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
@@ -151,17 +168,16 @@ async def echo(bot, update):
         if "This video is only available for registered users." in error_message:
             error_message += Translation.SET_CUSTOM_USERNAME_PASSWORD
         await chk.delete()
-        time.sleep(1)
+        
+        time.sleep(10)
         await bot.send_message(
             chat_id=update.chat.id,
             text=Translation.NO_VOID_FORMAT_FOUND.format(str(error_message)),
             reply_to_message_id=update.id,
-            parse_mode=enums.ParseMode.HTML,
             disable_web_page_preview=True
         )
         return False
     if t_response:
-        # logger.info(t_response)
         x_reponse = t_response
         if "\n" in x_reponse:
             x_reponse, _ = x_reponse.split("\n")
@@ -182,10 +198,16 @@ async def echo(bot, update):
                 format_string = formats.get("format_note")
                 if format_string is None:
                     format_string = formats.get("format")
+                if "DASH" in format_string.upper():
+                    continue
+          
                 format_ext = formats.get("ext")
-                approx_file_size = ""
-                if "filesize" in formats:
-                    approx_file_size = humanbytes(formats["filesize"])
+                if formats.get('filesize'):
+                    size = formats['filesize']
+                elif formats.get('filesize_approx'):
+                    size = formats['filesize_approx']
+                else:
+                    size = 0
                 cb_string_video = "{}|{}|{}|{}".format(
                     "video", format_id, format_ext, randem)
                 cb_string_file = "{}|{}|{}|{}".format(
@@ -193,7 +215,7 @@ async def echo(bot, update):
                 if format_string is not None and not "audio only" in format_string:
                     ikeyboard = [
                         InlineKeyboardButton(
-                            "🎬 " + format_string + " " + format_ext + " " + approx_file_size + " ",
+                            "📁 " + format_string + " " + format_ext + " " + humanbytes(size) + " ",
                             callback_data=(cb_string_video).encode("UTF-8")
                         )
                     ]
@@ -211,9 +233,9 @@ async def echo(bot, update):
                     # special weird case :\
                     ikeyboard = [
                         InlineKeyboardButton(
-                            "🎬 [" +
+                            "📁 [" +
                             "] ( " +
-                            approx_file_size + " )",
+                            humanbytes(size) + " )",
                             callback_data=(cb_string_video).encode("UTF-8")
                         )
                     ]
@@ -221,7 +243,7 @@ async def echo(bot, update):
             if duration is not None:
                 cb_string_64 = "{}|{}|{}|{}".format("audio", "64k", "mp3", randem)
                 cb_string_128 = "{}|{}|{}|{}".format("audio", "128k", "mp3", randem)
-                cb_string = "{}|{}|{}|{}".format("audio", "320k", "mp3", randem)
+                cb_string_320 = "{}|{}|{}|{}".format("audio", "320k", "mp3", randem)
                 inline_keyboard.append([
                     InlineKeyboardButton(
                         "🎵 ᴍᴘ𝟹 " + "(" + "64 ᴋʙᴘs" + ")", callback_data=cb_string_64.encode("UTF-8")),
@@ -230,11 +252,11 @@ async def echo(bot, update):
                 ])
                 inline_keyboard.append([
                     InlineKeyboardButton(
-                        "🎵 ᴍᴘ𝟹 " + "(" + "320 ᴋʙᴘs" + ")", callback_data=cb_string.encode("UTF-8"))
+                        "🎵 ᴍᴘ𝟹 " + "(" + "320 ᴋʙᴘs" + ")", callback_data=cb_string_320.encode("UTF-8"))
                 ])
                 inline_keyboard.append([                 
                     InlineKeyboardButton(
-                        "⛔️ ᴄʟᴏsᴇ", callback_data='close')               
+                        "🔒 ᴄʟᴏsᴇ", callback_data='close')               
                 ])
         else:
             format_id = response_json["format_id"]
@@ -245,17 +267,7 @@ async def echo(bot, update):
                 "video", format_id, format_ext, randem)
             inline_keyboard.append([
                 InlineKeyboardButton(
-                    "🎬 sᴍᴇᴅɪᴀ",
-                    callback_data=(cb_string_video).encode("UTF-8")
-                )
-            ])
-            cb_string_file = "{}={}={}".format(
-                "file", format_id, format_ext)
-            cb_string_video = "{}={}={}".format(
-                "video", format_id, format_ext)
-            inline_keyboard.append([
-                InlineKeyboardButton(
-                    "🎥 ᴠɪᴅᴇᴏ",
+                    "📁 Document",
                     callback_data=(cb_string_video).encode("UTF-8")
                 )
             ])
@@ -265,11 +277,11 @@ async def echo(bot, update):
             chat_id=update.chat.id,
             text=Translation.FORMAT_SELECTION.format(Thumbnail) + "\n" + Translation.SET_CUSTOM_USERNAME_PASSWORD,
             reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML,
+            disable_web_page_preview=True,
             reply_to_message_id=update.id
         )
     else:
-        # ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL
+        #fallback for nonnumeric port a.k.a seedbox.io
         inline_keyboard = []
         cb_string_file = "{}={}={}".format(
             "file", "LFO", "NONE")
@@ -277,7 +289,7 @@ async def echo(bot, update):
             "video", "OFL", "ENON")
         inline_keyboard.append([
             InlineKeyboardButton(
-                "🎬 ᴍᴇᴅɪᴀ",
+                "📁 ᴍᴇᴅɪᴀ",
                 callback_data=(cb_string_video).encode("UTF-8")
             )
         ])
@@ -287,6 +299,6 @@ async def echo(bot, update):
             chat_id=update.chat.id,
             text=Translation.FORMAT_SELECTION,
             reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML,
+            disable_web_page_preview=True,
             reply_to_message_id=update.id
         )

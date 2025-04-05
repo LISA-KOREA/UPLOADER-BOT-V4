@@ -13,7 +13,7 @@ from hachoir.parser import createParser
 
 
 async def place_water_mark(input_file, output_file, water_mark_file):
-    watermarked_file = output_file + ".watermark.png"
+    watermarked_file = output_file + "@UploaderXNTBot"
     metadata = extractMetadata(createParser(input_file))
     width = metadata.get("width")
     # https://stackoverflow.com/a/34547184/4723940

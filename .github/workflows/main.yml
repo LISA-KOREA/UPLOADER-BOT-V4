@@ -1,0 +1,52 @@
+name: Auto-Reply Bot
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:  # ✅ Add this section to grant necessary permissions
+  issues: write
+  pull-requests: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post a welcome comment
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}  # Ensure token is passed
+          script: |
+            const payload = context.payload;
+            let eventType = "";
+            let issueNumber = null;
+            let message = "";
+
+            if (payload.issue) {
+              eventType = "issue";
+              issueNumber = payload.issue.number;
+              message = "🎉 Thanks for opening an issue! Our team will review it soon.";
+            } else if (payload.pull_request) {
+              eventType = "pull request";
+              issueNumber = payload.pull_request.number;
+              message = "🚀 Thanks for your pull request! We'll review and merge if everything looks good.";
+            } else if (payload.comment) {
+              eventType = "comment";
+              issueNumber = payload.issue ? payload.issue.number : (payload.pull_request ? payload.pull_request.number : null);
+              message = "💬 Thanks for your comment! We'll take it into account.";
+            }
+
+            if (issueNumber) {
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: message
+              });
+            } else {
+              console.log("⚠️ No valid issue or pull request number found.");
+            }

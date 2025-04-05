@@ -115,11 +115,16 @@ For any questions, suggestions, or assistance, please contact [@JOBIN_JUSTIN](ht
 
 ### Bot Commands 
 ```
-start - Check Bot Online 🔔
-delthumb - Delete Your Thumbnail 🏞
-showthumb - Showing Your Thumbnail 🏞
-broadcast - Broadcast A Message To All Users 🌝
-invite - Invite Your Friends 🫂
+start – Check if the bot is online 🔔
+help – Learn how to use the bot ❓
+about – Get information about the bot ℹ️
+caption – Set a custom caption 📝
+delthumb – Delete your saved thumbnail 🏞️
+showthumb – View your current thumbnail 🖼️
+broadcast – Send a message to all users 📢
+warn – Issue a warning to a specific user ⚠️
+total – View the total number of users 👥
+status – Check the bot's current status 🚀
 ```
 
 ## Environment Variable
@@ -137,29 +142,41 @@ Check How To Make MONGODB URL or [YouTube](https://youtu.be/VudXkbirhM8?feature=
 
 * `OWNER_ID` Your telegram I'd use this bot [@UploadLinkToFileBot](https://telegram.dog/UploadLinkToFileBot) and use `/info`
 
+* `BOT_USERNAME` Add your bot username
+
 * `LOG_CHANNEL` Create a Private Channel and Send Any Message To That Channel and Forward to [@MissRose_bot](https://t.me/MissRose_bot) to Get Channel Id
 
 * `UPDATES_CHANNEL` Get it From [@MissRose_bot](https://t.me/MissRose_bot)
 
 * `SESSION_STR` Add your premium user session or skip (4GB)
+
+##### Shortlink settings
+
+* `TRUE_OR_FALSE` Set `False` off else `True`
+
+*  `SHORT_API` Add your shortner api
+
+*  `SHORT_DOMAIN` Add your shortlink domain like `shortlink.com`
+
+*  `VERIFICATION` Add your verification video link
 </b>
 </details>
 
 #
 
-<b><details><summary>Tap On See My Community Details</summary>
+### My Community Details
 
 - YouTube Channel : [Telegram Bots 🤖](https://youtube.com/@NTBOT?feature=shared)
 - Telegram Channel : [NT Bots ❤️‍🩹](https://t.me/NT_BOT_CHANNEL)
 - Telegram Group : [NT Bots Support 🎗️](https://t.me/NT_BOTS_SUPPORT)
 - URL Uploader Bot : [Uploader Bot 🚀](https://t.me/UploadLinkToFileBot)
-- My Tg Id : [Lisa 👑](https://t.me/LISA_FAN_LK)
+- Its Me : [Lisa 👑](https://t.me/LISA_FAN_LK)
 
-  
 
-</b>
-</details>
+### Credits and Thanks to ❤️
 
-### ⚠️ DON'T SELL THE REPO ###
-
+* [SpEcHlDe](https://github.com/SpEcHiDe)
+* [Clinton Abraham](https://github.com/Clinton-Abraham)
+* [Lisa](https://github.com/LISA-KOREA)
+* [Tech VJ](https://github.com/VJBots)
 

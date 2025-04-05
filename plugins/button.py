@@ -1,26 +1,21 @@
 # ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL
 
+import logging
 import asyncio
 import json
-import subprocess
-import math
 import os
 import shutil
 import time
 from datetime import datetime
-from pyrogram import enums 
+from pyrogram import enums
+from pyrogram.types import InputMediaPhoto
 from plugins.config import Config
 from plugins.script import Translation
 from plugins.thumbnail import *
-logging.getLogger("pyrogram").setLevel(logging.WARNING)
-from pyrogram.types import InputMediaPhoto
 from plugins.functions.display_progress import progress_for_pyrogram, humanbytes
 from plugins.database.database import db
 from PIL import Image
 from plugins.functions.ran_text import random_char
-
-
-cookies_file = "cookies.txt"
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG,
@@ -28,21 +23,7 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
-def check_ffmpeg_installed():
-    """Check if ffmpeg is installed on the system."""
-    try:
-        subprocess.run(["ffmpeg", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return True
-    except FileNotFoundError:
-        return False
-
 async def youtube_dl_call_back(bot, update):
-    if not check_ffmpeg_installed():
-        await update.message.edit_caption(
-            caption="Error: ffmpeg is not installed. Please install ffmpeg to download m3u8 streams."
-        )
-        return False
-
     cb_data = update.data
     tg_send_type, youtube_dl_format, youtube_dl_ext, ranom = cb_data.split("|")
     random1 = random_char(5)
@@ -116,9 +97,7 @@ async def youtube_dl_call_back(bot, update):
         "--hls-prefer-ffmpeg",
         "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
         youtube_dl_url,
-        "--cookies", cookies_file,
-        "-o", download_directory,
-        "--merge-output-format", "mp4"
+        "-o", download_directory
     ]
     
     if tg_send_type == "audio":
@@ -130,11 +109,9 @@ async def youtube_dl_call_back(bot, update):
             "--extract-audio",
             "--audio-format", youtube_dl_ext,
             "--audio-quality", youtube_dl_format,
-            "--cookies", cookies_file,
             "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             youtube_dl_url,
             "-o", download_directory
-            
         ]
     
     if Config.HTTP_PROXY:
@@ -189,7 +166,7 @@ async def youtube_dl_call_back(bot, update):
         if os.path.isfile(download_directory):
             file_size = os.stat(download_directory).st_size
         else:
-            download_directory = os.path.splitext(download_directory)[0] + ".mkv"
+            download_directory = os.path.splitext(download_directory)[0] + "." + ".mkv"
             if os.path.isfile(download_directory):
                 file_size = os.stat(download_directory).st_size
             else:
