@@ -23,34 +23,36 @@
 # Donation
 <b><details><summary>Click To Open Donation detelis</summary>
 
-We sincerely appreciate your interest in supporting our bot. Your generous contribution helps us maintain and improve the bot, ensuring it continues to provide value to everyone. Whether it’s ₹10, ₹20, ₹50, ₹100, or $2, $5, $10—every bit counts and brings us closer to our goals!
+## Support This Project
 
-🔘 Payment Methods:
+[![Donate](https://img.shields.io/badge/Donate-Support%20via%20UPI%2FPayPal-blue.svg?style=flat-square)](#support-this-project)
 
-- GPay / Paytm / PhonePe / PayPal / UPI / Bitcoin
-- Credit/Debit Cards: Accepted via PayPal
-- Cryptocurrencies: We also accept Bitcoin and Tron (TRC20) for secure and anonymous donations.
+[![Support the Project](https://i.imgur.com/Oy4F8fM.png)](#support-this-project)
 
-📱 Payment Details:
+Maintaining and improving this project takes time and resources. If you find this repository helpful, consider supporting its development. Every contribution helps!
 
-- UPI ID: `jobinjustin2002-1@okaxis`
-- Tron (TRC20): `THPYzzchV2fssaw5RE4TxL8NxJpfctw46J`
-- Payeer: `P1113797003`
-- Bitcoin: `1DPtf1xkq7aBriCBwDHNydSfzQT2PccFmj`
-- PayPlal: [Click to pay](https://www.paypal.me/lisajobin)
+### Payment Methods
 
-💬 Why Donate?
+- **UPI / GPay / Paytm / PhonePe**
+- **PayPal** (International)
+- **Credit/Debit Cards** (via PayPal)
+- **Cryptocurrency**: Bitcoin, Tron (TRC20)
+- **Payeer**
 
-- Sustainability: Your donations help cover server costs, maintenance, and development of new features.
-- Growth: Contributions allow us to scale up, offering better performance and more robust services.
-- Community Support: We aim to keep this bot free for everyone. Your support makes that possible.
+### Payment Details
 
-🎉 Special Thanks:
+- **UPI ID**: `jobinjustin2002-1@okaxis`  
+- **Bitcoin**: `1DPtf1xkq7aBriCBwDHNydSfzQT2PccFmj`  
+- **Tron (TRC20)**: `THPYzzchV2fssaw5RE4TxL8NxJpfctw46J`  
+- **Payeer**: `P1113797003`  
+- **PayPal**: [Click to Pay](#) *(Insert your PayPal link here)*
 
-As a token of our gratitude, we’ll mention our top supporters in the community (optional). Your kindness doesn’t go unnoticed!
+---
 
-👨‍💻 Developer Contact:  
-For any questions, suggestions, or assistance, please contact [@JOBIN_JUSTIN](https://t.me/JOBIN_JUSTIN). We're here to help and appreciate your feedback!
+### Contact
+
+**[@JOBIN_JUSTIN](https://t.me/JOBIN_JUSTIN)** on Telegram
+
 </b>
 </details>
 
