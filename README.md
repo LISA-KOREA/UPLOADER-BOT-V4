@@ -25,11 +25,7 @@
 
 ## Support This Project
 
-[![Donate](https://img.shields.io/badge/Donate-Support%20via%20UPI%2FPayPal-blue.svg?style=flat-square)](#support-this-project)
-
-[![Support the Project](https://i.imgur.com/Oy4F8fM.png)](#support-this-project)
-
-Maintaining and improving this project takes time and resources. If you find this repository helpful, consider supporting its development. Every contribution helps!
+Maintaining and improving this project takes time and resources. If you find this repository helpful or use it in your own projects, consider supporting its development. Your contributions—no matter how small—help keep the project alive and evolving.
 
 ### Payment Methods
 
@@ -47,12 +43,16 @@ Maintaining and improving this project takes time and resources. If you find thi
 - **Payeer**: `P1113797003`  
 - **PayPal**: [Click to Pay](#) *(Insert your PayPal link here)*
 
----
+### Why Donate?
+
+- To support ongoing development and new features
+- To help cover infrastructure and hosting costs
+- To keep the project open-source and free for everyone
 
 ### Contact
 
-**[@JOBIN_JUSTIN](https://t.me/JOBIN_JUSTIN)** on Telegram
-
+If you have any questions or would like to sponsor this project in another way, feel free to reach out:  
+**[@JOBIN_JUSTIN](https://t.me/JOBIN_JUSTIN)** on Telegram.
 </b>
 </details>
 
