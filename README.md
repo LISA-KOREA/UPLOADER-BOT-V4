@@ -12,7 +12,7 @@
 #
 
 #
-<a href="https://github.com/LISA-KOREA"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=47000&size=40&pause=1000&color=FF0000&random=false&width=500&height=55&lines=GIVE+ME+A+STAR" alt="Typing SVG" /></a>
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&pause=1000&color=F70000&multiline=true&width=460&height=60&lines=GIVE+ME+A+STAR+%E2%AD%90%EF%B8%8F+)](https://git.io/typing-svg)
 
 #
 
