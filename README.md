@@ -1,4 +1,4 @@
-## URL Uᴘʟᴏᴀᴅᴇʀ ʙᴏᴛ V4 🚀 (4GB Support)
+## URL Uᴘʟᴏᴀᴅᴇʀ ʙᴏᴛ V4 🚀
 
 
 [![logo](https://graph.org/file/a7af2d3ece56bbb1297aa.jpg)](https://telegram.dog/UploadLinkToFileBot)
