@@ -27,11 +27,6 @@ async def button(bot, update):
             text=Translation.HELP_TEXT,
             reply_markup=Translation.HELP_BUTTONS,
         )
-    elif update.data == "plans":
-        await update.message.edit(
-            text=Translation.UPGRADE_TEXT,
-            reply_markup=Translation.PLANS_BUTTONS,
-        )
     elif update.data == "about":
         await update.message.edit(
             text=Translation.ABOUT_TEXT,
