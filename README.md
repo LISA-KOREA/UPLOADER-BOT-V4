@@ -22,11 +22,8 @@
 This is a **public project** — if you fork it and push your bot’s credentials,  
 **everyone can see your secrets** (including your `BOT_TOKEN`, `API_HASH`, or `cookies.txt`).
 
-### ❌ Don’t do this:
-```
-BOT_TOKEN = 123456:ABCDEFgh...
-API_HASH = 123abc...
-```
+> Use **Heroku Config Vars**, `.env`, or private forks to keep your credentials safe.  
+
 ### BUY ME A COFFEE ☕️
 <a href="https://www.buymeacoffee.com/lisakorean" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
