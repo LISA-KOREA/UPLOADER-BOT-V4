@@ -32,11 +32,11 @@ class Config(object):
 
     DATABASE_URL = os.environ.get("DATABASE_URL", "mongodb+srv://root:Bhadasar1#@cluster0.uoxgl1h.mongodb.net/?appName=Cluster0")
 
-    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002191815495"))
+    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", None))
     LOGGER = logging
     OWNER_ID = int(os.environ.get("OWNER_ID", "1071594702"))
     SESSION_NAME = "UploaderXNTBot"
-    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "-1002191815495")
+    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", None)
 
     TG_MIN_FILE_SIZE = 2194304000
     BOT_USERNAME = os.environ.get("BOT_USERNAME", "Reezexbot")
