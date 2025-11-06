@@ -23,6 +23,12 @@ class Config(object):
     DEF_THUMB_NAIL_VID_S = os.environ.get("DEF_THUMB_NAIL_VID_S", "https://placehold.it/90x90")
     HTTP_PROXY = os.environ.get("HTTP_PROXY", "")
 
+    # Ensure yt-dlp uses impersonation to bypass Cloudflare when possible.
+    # CLI form for subprocess calls (used as: --extractor-args generic:impersonate)
+    YTDL_EXTRACTOR_ARGS = os.environ.get("YTDL_EXTRACTOR_ARGS", "generic:impersonate")
+    # Dict form for yt_dlp.YoutubeDL(options)
+    YTDL_EXTRACTOR_ARGS_DICT = {"generic": ["impersonate"]}
+
     OUO_IO_API_KEY = ""
     MAX_MESSAGE_LENGTH = 4096
     PROCESS_MAX_TIMEOUT = 3600
