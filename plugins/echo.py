@@ -1,5 +1,5 @@
 # ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL | TG-SORRY
-# Fixed version with proper format selection flow
+# Simplified version with 1080p and Best Available options only
 
 import logging
 logging.basicConfig(level=logging.DEBUG,
@@ -107,20 +107,20 @@ def extract_video_info(url: str) -> tuple[bool, dict | str]:
         return False, f"Unexpected error: {str(e)}"
 
 
-def download_specific_format(url: str, format_id: str, output_path: str) -> tuple[bool, str]:
+def download_specific_format(url: str, format_string: str, output_path: str) -> tuple[bool, str]:
     """
     Download video with SPECIFIC format selected by user.
     This is the SECOND step - download after user chooses quality.
     
     Args:
         url: Video URL
-        format_id: Format ID chosen by user (e.g., "137+140" or "best")
+        format_string: Format string chosen by user (e.g., "bestvideo[height<=1080]+bestaudio/best[height<=1080]" or "best")
         output_path: Where to save the file
         
     Returns:
         tuple[bool, str]: (success, filepath_or_error_msg)
     """
-    logger.info(f"Downloading format {format_id} for URL: {url}")
+    logger.info(f"Downloading format {format_string} for URL: {url}")
     
     try:
         # Ensure download directory exists
@@ -129,7 +129,7 @@ def download_specific_format(url: str, format_id: str, output_path: str) -> tupl
         
         ydl_opts = {
             "outtmpl": output_path,
-            "format": format_id,  # Use user-selected format
+            "format": format_string,  # Use user-selected format
             "extractor_args": {
                 "generic": {"impersonate": [""]}
             },
@@ -173,7 +173,7 @@ def download_specific_format(url: str, format_id: str, output_path: str) -> tupl
 @Client.on_message(filters.private & filters.regex(pattern=".*http.*"))
 async def echo(bot, update):
     """
-    Step 1: Receive URL, extract info, show format options
+    Step 1: Receive URL, extract info, show SIMPLIFIED format options (1080p or Best)
     """
     # Verification checks
     if update.from_user.id != Config.OWNER_ID:  
@@ -276,108 +276,48 @@ async def echo(bot, update):
             "session_id": user_session_id
         }, outfile, ensure_ascii=False)
     
-    # Build format selection keyboard
+    # Build SIMPLIFIED format selection keyboard
     inline_keyboard = []
     duration = response_json.get("duration")
     title = response_json.get("title", "Video")
     
-    if "formats" in response_json:
-        # Group formats by quality
-        video_formats = {}
-        audio_formats = []
-        
-        for fmt in response_json["formats"]:
-            format_id = fmt.get("format_id")
-            format_note = fmt.get("format_note") or fmt.get("format", "")
-            ext = fmt.get("ext", "mp4")
-            
-            # Skip DASH formats (they need merging)
-            if "DASH" in format_note.upper():
-                continue
-            
-            # Get filesize
-            size = fmt.get('filesize') or fmt.get('filesize_approx') or 0
-            
-            # Categorize formats
-            if fmt.get('vcodec') != 'none' and fmt.get('acodec') != 'none':
-                # Video with audio (best for users)
-                height = fmt.get('height', 0)
-                if height:
-                    quality_label = f"{height}p"
-                    if quality_label not in video_formats or size > video_formats[quality_label]['size']:
-                        video_formats[quality_label] = {
-                            'format_id': format_id,
-                            'ext': ext,
-                            'size': size,
-                            'note': format_note
-                        }
-            elif fmt.get('acodec') != 'none' and fmt.get('vcodec') == 'none':
-                # Audio only
-                abr = fmt.get('abr', 0)
-                if abr:
-                    audio_formats.append({
-                        'format_id': format_id,
-                        'ext': ext,
-                        'size': size,
-                        'bitrate': int(abr)
-                    })
-        
-        # Sort video formats by quality (descending)
-        sorted_qualities = sorted(
-            video_formats.items(), 
-            key=lambda x: int(x[0].replace('p', '')), 
-            reverse=True
+    # Add only TWO video quality options
+    inline_keyboard.append([
+        InlineKeyboardButton("──── 🎬 VIDEO QUALITY ────", callback_data="noop")
+    ])
+    
+    # Option 1: 1080p (if available, otherwise best available below 1080p)
+    inline_keyboard.append([
+        InlineKeyboardButton(
+            "📺 1080p Quality", 
+            callback_data=f"dl_video|1080p|mp4|{user_session_id}"
         )
-        
-        # Add video format buttons
-        for quality, fmt_data in sorted_qualities:
-            cb_string = f"dl_video|{fmt_data['format_id']}|{fmt_data['ext']}|{user_session_id}"
-            button_text = f"🎬 {quality} • {fmt_data['ext'].upper()} • {humanbytes(fmt_data['size'])}"
-            inline_keyboard.append([
-                InlineKeyboardButton(button_text, callback_data=cb_string)
-            ])
-        
-        # Add audio format buttons
-        if audio_formats:
-            inline_keyboard.append([
-                InlineKeyboardButton("──── 🎵 AUDIO ONLY ────", callback_data="noop")
-            ])
-            
-            # Remove duplicates and sort by bitrate
-            seen_bitrates = set()
-            unique_audio = []
-            for audio in sorted(audio_formats, key=lambda x: x['bitrate'], reverse=True):
-                if audio['bitrate'] not in seen_bitrates:
-                    seen_bitrates.add(audio['bitrate'])
-                    unique_audio.append(audio)
-            
-            for audio in unique_audio[:3]:  # Limit to top 3
-                cb_string = f"dl_audio|{audio['format_id']}|{audio['ext']}|{user_session_id}"
-                button_text = f"🎵 {audio['bitrate']}kbps • {audio['ext'].upper()} • {humanbytes(audio['size'])}"
-                inline_keyboard.append([
-                    InlineKeyboardButton(button_text, callback_data=cb_string)
-                ])
-        
-        # Add MP3 conversion options if video has audio
-        if duration:
-            inline_keyboard.append([
-                InlineKeyboardButton("──── 🎼 CONVERT TO MP3 ────", callback_data="noop")
-            ])
-            inline_keyboard.append([
-                InlineKeyboardButton("🎵 MP3 64kbps", callback_data=f"dl_mp3|64|mp3|{user_session_id}"),
-                InlineKeyboardButton("🎵 MP3 128kbps", callback_data=f"dl_mp3|128|mp3|{user_session_id}")
-            ])
-            inline_keyboard.append([
-                InlineKeyboardButton("🎵 MP3 320kbps", callback_data=f"dl_mp3|320|mp3|{user_session_id}")
-            ])
-    else:
-        # Fallback: single format available
-        format_id = response_json.get("format_id", "best")
-        format_ext = response_json.get("ext", "mp4")
-        cb_string = f"dl_video|{format_id}|{format_ext}|{user_session_id}"
-        inline_keyboard.append([
-            InlineKeyboardButton("📥 Download", callback_data=cb_string)
-        ])
+    ])
+    
+    # Option 2: Best Available (highest quality no matter what)
+    inline_keyboard.append([
+        InlineKeyboardButton(
+            "🌟 Best Available Quality", 
+            callback_data=f"dl_video|best|mp4|{user_session_id}"
+        )
+    ])
+    
+    # Add audio options
+    inline_keyboard.append([
+        InlineKeyboardButton("──── 🎵 AUDIO ONLY ────", callback_data="noop")
+    ])
+    inline_keyboard.append([
+        InlineKeyboardButton("🎵 Best Audio Quality", callback_data=f"dl_audio|bestaudio|m4a|{user_session_id}")
+    ])
+    
+    # Add MP3 conversion options
+    inline_keyboard.append([
+        InlineKeyboardButton("──── 🎼 CONVERT TO MP3 ────", callback_data="noop")
+    ])
+    inline_keyboard.append([
+        InlineKeyboardButton("🎵 MP3 128kbps", callback_data=f"dl_mp3|128|mp3|{user_session_id}"),
+        InlineKeyboardButton("🎵 MP3 320kbps", callback_data=f"dl_mp3|320|mp3|{user_session_id}")
+    ])
     
     # Add close button
     inline_keyboard.append([                 
@@ -391,7 +331,9 @@ async def echo(bot, update):
         chat_id=update.chat.id,
         text=f"<b>📹 {title}</b>\n\n"
              f"⏱ Duration: {TimeFormatter(duration * 1000) if duration else 'Unknown'}\n\n"
-             f"Select quality to download:",
+             f"<b>Select quality to download:</b>\n"
+             f"• <i>1080p Quality</i> - Download in 1080p if available, or best quality below 1080p\n"
+             f"• <i>Best Available</i> - Download the highest quality available (480p/1080p/4K/etc)",
         reply_markup=reply_markup,
         disable_web_page_preview=True,
         reply_to_message_id=update.id,
@@ -427,9 +369,27 @@ async def download_callback(bot, query):
         info = session_data["info"]
         custom_filename = session_data.get("custom_filename")
         
+        # Build the format string based on user selection
+        if format_id == "1080p":
+            # Try 1080p, fallback to best available below 1080p
+            format_string = "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=1080]+bestaudio/best[height<=1080]/best"
+            quality_label = "1080p"
+        elif format_id == "best":
+            # Best available quality (no limit)
+            format_string = "bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio/best"
+            quality_label = "Best Available"
+        elif format_id == "bestaudio":
+            # Best audio
+            format_string = "bestaudio/best"
+            quality_label = "Best Audio"
+        else:
+            # Fallback
+            format_string = format_id
+            quality_label = format_id
+        
         # Update message to show downloading
         await query.edit_message_text(
-            f"⬇️ Downloading {format_id} format...\n\n"
+            f"⬇️ Downloading in <b>{quality_label}</b> quality...\n\n"
             f"<i>Please wait, this may take a while...</i>",
             parse_mode=enums.ParseMode.HTML
         )
@@ -452,14 +412,13 @@ async def download_callback(bot, query):
         if dl_type == "dl_mp3":
             # MP3 conversion: extract audio and convert
             bitrate = format_id  # format_id contains bitrate for MP3
-            download_format = f"bestaudio/best"
             output_path = output_path.replace(f".{ext}", ".mp3")
             
             # Download with audio extraction
             success, filepath = download_with_mp3_conversion(url, output_path, bitrate)
         else:
             # Regular download with selected format
-            success, filepath = download_specific_format(url, format_id, output_path)
+            success, filepath = download_specific_format(url, format_string, output_path)
         
         if not success:
             await query.edit_message_text(f"❌ Download failed: {filepath}")
@@ -525,7 +484,7 @@ async def download_callback(bot, query):
                 width=width,
                 height=height,
                 thumb=thumb_path,
-                caption=f"<b>{info.get('title', 'Video')}</b>",
+                caption=f"<b>{info.get('title', 'Video')}</b>\n\n<i>Quality: {quality_label}</i>",
                 parse_mode=enums.ParseMode.HTML,
                 progress=progress_for_pyrogram,
                 progress_args=(
