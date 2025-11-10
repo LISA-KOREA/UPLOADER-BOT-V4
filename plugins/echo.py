@@ -1,4 +1,4 @@
-# ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL | TG-SORRY
+# Â©ï¸ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL | TG-SORRY
 # Simplified version with 1080p and Best Available options only
 
 import logging
@@ -34,6 +34,37 @@ import re
 
 cookies_file = 'cookies.txt'
 
+def ensure_cookies_file():
+    """
+    Create a valid Netscape format cookies file if it doesn't exist.
+    Returns True if cookies file is valid/created, False otherwise.
+    """
+    if not os.path.exists(cookies_file):
+        logger.info(f"Creating new cookies file: {cookies_file}")
+        try:
+            with open(cookies_file, 'w') as f:
+                f.write("# Netscape HTTP Cookie File\n")
+                f.write("# This is a generated file! Do not edit.\n\n")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to create cookies file: {e}")
+            return False
+    
+    # Validate existing cookies file
+    try:
+        with open(cookies_file, 'r') as f:
+            first_line = f.readline().strip()
+            if not first_line.startswith("# Netscape HTTP Cookie File"):
+                logger.warning("Invalid cookies file format, recreating...")
+                with open(cookies_file, 'w') as f:
+                    f.write("# Netscape HTTP Cookie File\n")
+                    f.write("# This is a generated file! Do not edit.\n\n")
+        return True
+    except Exception as e:
+        logger.error(f"Error validating cookies file: {e}")
+        return False
+
+
 def validate_url(url: str) -> bool:
     """Validate if the URL is properly formatted"""
     if not url or not isinstance(url, str):
@@ -50,6 +81,51 @@ def validate_url(url: str) -> bool:
     return url_pattern.match(url) is not None
 
 
+def get_ydl_base_opts(use_cookies: bool = True) -> dict:
+    """
+    Get base yt-dlp options with optional cookies support.
+    
+    Args:
+        use_cookies: Whether to include cookies file (default: True)
+    
+    Returns:
+        dict: Base yt-dlp options
+    """
+    opts = {
+        "extractor_args": {
+            "generic": {"impersonate": [""]}
+        },
+        "no_warnings": False,
+        "allow_dynamic_mpd": True,
+        "no_check_certificate": True,
+        "geo_bypass_country": "IN",
+        "ignoreerrors": False,
+        "verbose": False,
+        "extract_flat": False,
+        "timeout": 120,
+        "retries": 5,
+        "sleep_interval": 1,
+        "max_sleep_interval": 3,
+    }
+    
+    # Add cookies only if file is valid
+    if use_cookies and os.path.exists(cookies_file):
+        try:
+            with open(cookies_file, 'r') as f:
+                first_line = f.readline().strip()
+                if first_line.startswith("# Netscape HTTP Cookie File"):
+                    opts["cookiefile"] = cookies_file
+                    logger.info("Using cookies file")
+        except Exception as e:
+            logger.warning(f"Could not read cookies file: {e}")
+    
+    # Add proxy if configured
+    if hasattr(Config, 'HTTP_PROXY') and Config.HTTP_PROXY and Config.HTTP_PROXY != "":
+        opts["proxy"] = Config.HTTP_PROXY
+    
+    return opts
+
+
 def extract_video_info(url: str) -> tuple[bool, dict | str]:
     """
     Extract video information WITHOUT downloading.
@@ -63,27 +139,11 @@ def extract_video_info(url: str) -> tuple[bool, dict | str]:
     if not validate_url(url):
         return False, "Invalid URL format. Please provide a valid URL."
     
+    # Ensure cookies file exists and is valid
+    ensure_cookies_file()
+    
     try:
-        ydl_opts = {
-            "extractor_args": {
-                "generic": {"impersonate": [""]}
-            },
-            "cookiefile": cookies_file,
-            "no_warnings": False,
-            "allow_dynamic_mpd": True,
-            "no_check_certificate": True,
-            "geo_bypass_country": "IN",
-            "ignoreerrors": False,
-            "verbose": False,
-            "extract_flat": False,
-            "timeout": 120,
-            "retries": 5,
-            "sleep_interval": 1,
-            "max_sleep_interval": 3,
-        }
-        
-        if hasattr(Config, 'HTTP_PROXY') and Config.HTTP_PROXY and Config.HTTP_PROXY != "":
-            ydl_opts["proxy"] = Config.HTTP_PROXY
+        ydl_opts = get_ydl_base_opts(use_cookies=True)
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Extract info WITHOUT downloading
@@ -101,10 +161,38 @@ def extract_video_info(url: str) -> tuple[bool, dict | str]:
             return False, "Cloudflare protection detected. Try a different URL or wait a few minutes."
         if "sign in to confirm you're not a bot" in error_msg:
             return False, "YouTube verification required. Try again in a few minutes."
+        if "cookies" in error_msg.lower():
+            logger.warning("Cookies error, retrying without cookies...")
+            # Retry without cookies
+            return extract_video_info_without_cookies(url)
         return False, f"Download error: {error_msg}"
         
     except Exception as e:
-        return False, f"Unexpected error: {str(e)}"
+        error_msg = str(e)
+        if "cookies" in error_msg.lower():
+            logger.warning("Cookies error, retrying without cookies...")
+            return extract_video_info_without_cookies(url)
+        return False, f"Unexpected error: {error_msg}"
+
+
+def extract_video_info_without_cookies(url: str) -> tuple[bool, dict | str]:
+    """
+    Fallback: Extract video info without using cookies.
+    """
+    logger.info("Attempting extraction without cookies...")
+    try:
+        ydl_opts = get_ydl_base_opts(use_cookies=False)
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            
+            if 'entries' in info:
+                logger.warning("Playlist detected, using first video")
+                info = info['entries'][0]
+            
+            return True, info
+    except Exception as e:
+        return False, f"Error (no cookies): {str(e)}"
 
 
 def download_specific_format(url: str, format_string: str, output_path: str) -> tuple[bool, str]:
@@ -122,33 +210,20 @@ def download_specific_format(url: str, format_string: str, output_path: str) -> 
     """
     logger.info(f"Downloading format {format_string} for URL: {url}")
     
+    # Ensure cookies file exists
+    ensure_cookies_file()
+    
     try:
         # Ensure download directory exists
         download_dir = os.path.dirname(output_path) or './downloads'
         os.makedirs(download_dir, exist_ok=True)
         
-        ydl_opts = {
+        ydl_opts = get_ydl_base_opts(use_cookies=True)
+        ydl_opts.update({
             "outtmpl": output_path,
-            "format": format_string,  # Use user-selected format
-            "extractor_args": {
-                "generic": {"impersonate": [""]}
-            },
-            "cookiefile": cookies_file,
-            "no_warnings": False,
-            "allow_dynamic_mpd": True,
-            "no_check_certificate": True,
-            "geo_bypass_country": "IN",
-            "ignoreerrors": False,
-            "verbose": False,
-            "timeout": 120,
-            "retries": 5,
-            "sleep_interval": 1,
-            "max_sleep_interval": 3,
-            "merge_output_format": "mp4",  # Ensure MP4 output for video+audio
-        }
-        
-        if hasattr(Config, 'HTTP_PROXY') and Config.HTTP_PROXY and Config.HTTP_PROXY != "":
-            ydl_opts["proxy"] = Config.HTTP_PROXY
+            "format": format_string,
+            "merge_output_format": "mp4",
+        })
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
@@ -167,7 +242,44 @@ def download_specific_format(url: str, format_string: str, output_path: str) -> 
             return False, "Download completed but file not found"
             
     except Exception as e:
-        return False, f"Download error: {str(e)}"
+        error_msg = str(e)
+        if "cookies" in error_msg.lower():
+            logger.warning("Cookies error during download, retrying without cookies...")
+            return download_specific_format_without_cookies(url, format_string, output_path)
+        return False, f"Download error: {error_msg}"
+
+
+def download_specific_format_without_cookies(url: str, format_string: str, output_path: str) -> tuple[bool, str]:
+    """
+    Fallback: Download without cookies.
+    """
+    logger.info("Attempting download without cookies...")
+    try:
+        download_dir = os.path.dirname(output_path) or './downloads'
+        os.makedirs(download_dir, exist_ok=True)
+        
+        ydl_opts = get_ydl_base_opts(use_cookies=False)
+        ydl_opts.update({
+            "outtmpl": output_path,
+            "format": format_string,
+            "merge_output_format": "mp4",
+        })
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+            
+            if os.path.exists(output_path):
+                return True, output_path
+            
+            base_path = os.path.splitext(output_path)[0]
+            for ext in ['.mp4', '.webm', '.mkv', '.m4a', '.mp3']:
+                potential_file = base_path + ext
+                if os.path.exists(potential_file):
+                    return True, potential_file
+            
+            return False, "Download completed but file not found"
+    except Exception as e:
+        return False, f"Download error (no cookies): {str(e)}"
 
 
 @Client.on_message(filters.private & filters.regex(pattern=".*http.*"))
@@ -179,12 +291,12 @@ async def echo(bot, update):
     if update.from_user.id != Config.OWNER_ID:  
         if not await check_verification(bot, update.from_user.id) and Config.TRUE_OR_FALSE:
             button = [[
-                InlineKeyboardButton("✓⃝ Vᴇʀɪғʏ ✓⃝", url=await get_token(bot, update.from_user.id, f"https://telegram.me/{Config.BOT_USERNAME}?start="))
+                InlineKeyboardButton("âœ“âƒ Vá´‡Ê€ÉªÒ“Ê âœ“âƒ", url=await get_token(bot, update.from_user.id, f"https://telegram.me/{Config.BOT_USERNAME}?start="))
                 ],[
-                InlineKeyboardButton("📆 Wᴀᴛᴄʜ Hᴏᴡ Tᴏ Vᴇʀɪғʏ 📆", url=f"{Config.VERIFICATION}")
+                InlineKeyboardButton("ðŸ“† Wá´€á´›á´„Êœ Há´á´¡ Tá´ Vá´‡Ê€ÉªÒ“Ê ðŸ“†", url=f"{Config.VERIFICATION}")
             ]]
             await update.reply_text(
-                text="<b>Pʟᴇᴀsᴇ Vᴇʀɪғʏ Fɪʀsᴛ Tᴏ Usᴇ Mᴇ</b>",
+                text="<b>PÊŸá´‡á´€sá´‡ Vá´‡Ê€ÉªÒ“Ê FÉªÊ€sá´› Tá´ Usá´‡ Má´‡</b>",
                 protect_content=True,
                 reply_markup=InlineKeyboardMarkup(button)
             )
@@ -243,7 +355,7 @@ async def echo(bot, update):
     # Show processing message
     chk = await bot.send_message(
         chat_id=update.chat.id,
-        text="🔍 Extracting video information...",
+        text="ðŸ” Extracting video information...",
         disable_web_page_preview=True,
         reply_to_message_id=update.id,
         parse_mode=enums.ParseMode.HTML
@@ -253,7 +365,7 @@ async def echo(bot, update):
     success, result = extract_video_info(url)
     
     if not success:
-        await chk.edit_text(f"❌ Error: {result}")
+        await chk.edit_text(f"âŒ Error: {result}")
         return
     
     response_json = result
@@ -283,13 +395,13 @@ async def echo(bot, update):
     
     # Add only TWO video quality options
     inline_keyboard.append([
-        InlineKeyboardButton("──── 🎬 VIDEO QUALITY ────", callback_data="noop")
+        InlineKeyboardButton("â”€â”€â”€â”€ ðŸŽ¬ VIDEO QUALITY â”€â”€â”€â”€", callback_data="noop")
     ])
     
     # Option 1: 1080p (if available, otherwise best available below 1080p)
     inline_keyboard.append([
         InlineKeyboardButton(
-            "📺 1080p Quality", 
+            "ðŸ“º 1080p Quality", 
             callback_data=f"dl_video|1080p|mp4|{user_session_id}"
         )
     ])
@@ -297,31 +409,31 @@ async def echo(bot, update):
     # Option 2: Best Available (highest quality no matter what)
     inline_keyboard.append([
         InlineKeyboardButton(
-            "🌟 Best Available Quality", 
+            "ðŸŒŸ Best Available Quality", 
             callback_data=f"dl_video|best|mp4|{user_session_id}"
         )
     ])
     
     # Add audio options
     inline_keyboard.append([
-        InlineKeyboardButton("──── 🎵 AUDIO ONLY ────", callback_data="noop")
+        InlineKeyboardButton("â”€â”€â”€â”€ ðŸŽµ AUDIO ONLY â”€â”€â”€â”€", callback_data="noop")
     ])
     inline_keyboard.append([
-        InlineKeyboardButton("🎵 Best Audio Quality", callback_data=f"dl_audio|bestaudio|m4a|{user_session_id}")
+        InlineKeyboardButton("ðŸŽµ Best Audio Quality", callback_data=f"dl_audio|bestaudio|m4a|{user_session_id}")
     ])
     
     # Add MP3 conversion options
     inline_keyboard.append([
-        InlineKeyboardButton("──── 🎼 CONVERT TO MP3 ────", callback_data="noop")
+        InlineKeyboardButton("â”€â”€â”€â”€ ðŸŽ¼ CONVERT TO MP3 â”€â”€â”€â”€", callback_data="noop")
     ])
     inline_keyboard.append([
-        InlineKeyboardButton("🎵 MP3 128kbps", callback_data=f"dl_mp3|128|mp3|{user_session_id}"),
-        InlineKeyboardButton("🎵 MP3 320kbps", callback_data=f"dl_mp3|320|mp3|{user_session_id}")
+        InlineKeyboardButton("ðŸŽµ MP3 128kbps", callback_data=f"dl_mp3|128|mp3|{user_session_id}"),
+        InlineKeyboardButton("ðŸŽµ MP3 320kbps", callback_data=f"dl_mp3|320|mp3|{user_session_id}")
     ])
     
     # Add close button
     inline_keyboard.append([                 
-        InlineKeyboardButton("🔒 Close", callback_data='close')               
+        InlineKeyboardButton("ðŸ”’ Close", callback_data='close')               
     ])
     
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
@@ -329,11 +441,11 @@ async def echo(bot, update):
     await chk.delete()
     await bot.send_message(
         chat_id=update.chat.id,
-        text=f"<b>📹 {title}</b>\n\n"
-             f"⏱ Duration: {TimeFormatter(duration * 1000) if duration else 'Unknown'}\n\n"
+        text=f"<b>ðŸ“¹ {title}</b>\n\n"
+             f"â± Duration: {TimeFormatter(duration * 1000) if duration else 'Unknown'}\n\n"
              f"<b>Select quality to download:</b>\n"
-             f"• <i>1080p Quality</i> - Download in 1080p if available, or best quality below 1080p\n"
-             f"• <i>Best Available</i> - Download the highest quality available (480p/1080p/4K/etc)",
+             f"â€¢ <i>1080p Quality</i> - Download in 1080p if available, or best quality below 1080p\n"
+             f"â€¢ <i>Best Available</i> - Download the highest quality available (480p/1080p/4K/etc)",
         reply_markup=reply_markup,
         disable_web_page_preview=True,
         reply_to_message_id=update.id,
@@ -389,7 +501,7 @@ async def download_callback(bot, query):
         
         # Update message to show downloading
         await query.edit_message_text(
-            f"⬇️ Downloading in <b>{quality_label}</b> quality...\n\n"
+            f"â¬‡ï¸ Downloading in <b>{quality_label}</b> quality...\n\n"
             f"<i>Please wait, this may take a while...</i>",
             parse_mode=enums.ParseMode.HTML
         )
@@ -421,14 +533,14 @@ async def download_callback(bot, query):
             success, filepath = download_specific_format(url, format_string, output_path)
         
         if not success:
-            await query.edit_message_text(f"❌ Download failed: {filepath}")
+            await query.edit_message_text(f"âŒ Download failed: {filepath}")
             return
         
         # Check file size
         file_size = os.path.getsize(filepath)
         if file_size > 2097152000:  # 2GB Telegram limit
             await query.edit_message_text(
-                f"❌ File too large: {humanbytes(file_size)}\n"
+                f"âŒ File too large: {humanbytes(file_size)}\n"
                 f"Telegram limit is 2GB"
             )
             os.remove(filepath)
@@ -436,7 +548,7 @@ async def download_callback(bot, query):
         
         # Upload to Telegram
         await query.edit_message_text(
-            f"📤 Uploading {humanbytes(file_size)}...",
+            f"ðŸ“¤ Uploading {humanbytes(file_size)}...",
             parse_mode=enums.ParseMode.HTML
         )
         
@@ -455,7 +567,7 @@ async def download_callback(bot, query):
                 title=title_track,
                 progress=progress_for_pyrogram,
                 progress_args=(
-                    f"📤 Uploading {os.path.basename(filepath)}",
+                    f"ðŸ“¤ Uploading {os.path.basename(filepath)}",
                     query.message,
                     time.time()
                 )
@@ -488,7 +600,7 @@ async def download_callback(bot, query):
                 parse_mode=enums.ParseMode.HTML,
                 progress=progress_for_pyrogram,
                 progress_args=(
-                    f"📤 Uploading {os.path.basename(filepath)}",
+                    f"ðŸ“¤ Uploading {os.path.basename(filepath)}",
                     query.message,
                     time.time()
                 )
@@ -505,7 +617,7 @@ async def download_callback(bot, query):
         
         # Delete status message
         await query.message.delete()
-        await query.answer("✅ Uploaded successfully!", show_alert=False)
+        await query.answer("âœ… Uploaded successfully!", show_alert=False)
         
     except Exception as e:
         logger.error(f"Callback error: {e}")
@@ -516,28 +628,20 @@ def download_with_mp3_conversion(url: str, output_path: str, bitrate: str) -> tu
     """
     Download and convert to MP3 with specified bitrate
     """
+    # Ensure cookies file exists
+    ensure_cookies_file()
+    
     try:
-        ydl_opts = {
+        ydl_opts = get_ydl_base_opts(use_cookies=True)
+        ydl_opts.update({
             "outtmpl": output_path,
             "format": "bestaudio/best",
-            "extractor_args": {
-                "generic": {"impersonate": [""]}
-            },
-            "cookiefile": cookies_file,
             "postprocessors": [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': bitrate,
             }],
-            "no_warnings": False,
-            "ignoreerrors": False,
-            "verbose": False,
-            "timeout": 120,
-            "retries": 5,
-        }
-        
-        if hasattr(Config, 'HTTP_PROXY') and Config.HTTP_PROXY:
-            ydl_opts["proxy"] = Config.HTTP_PROXY
+        })
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
@@ -554,7 +658,43 @@ def download_with_mp3_conversion(url: str, output_path: str, bitrate: str) -> tu
             return False, "Conversion completed but file not found"
     
     except Exception as e:
-        return False, f"Conversion error: {str(e)}"
+        error_msg = str(e)
+        if "cookies" in error_msg.lower():
+            logger.warning("Cookies error during MP3 conversion, retrying without cookies...")
+            return download_with_mp3_conversion_without_cookies(url, output_path, bitrate)
+        return False, f"Conversion error: {error_msg}"
+
+
+def download_with_mp3_conversion_without_cookies(url: str, output_path: str, bitrate: str) -> tuple[bool, str]:
+    """
+    Fallback: Download and convert to MP3 without cookies.
+    """
+    logger.info("Attempting MP3 conversion without cookies...")
+    try:
+        ydl_opts = get_ydl_base_opts(use_cookies=False)
+        ydl_opts.update({
+            "outtmpl": output_path,
+            "format": "bestaudio/best",
+            "postprocessors": [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': bitrate,
+            }],
+        })
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+            
+            if os.path.exists(output_path):
+                return True, output_path
+            
+            base = os.path.splitext(output_path)[0]
+            if os.path.exists(f"{base}.mp3"):
+                return True, f"{base}.mp3"
+            
+            return False, "Conversion completed but file not found"
+    except Exception as e:
+        return False, f"Conversion error (no cookies): {str(e)}"
 
 
 @Client.on_callback_query(filters.regex("^close$"))
