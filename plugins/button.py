@@ -1,3 +1,6 @@
+# Yt-dlp download with aria2c preferred (graceful fallback), live unified progress,
+# Pause/Resume/Cancel inline controls, and MediaInfo card before upload.
+# Supports rename via _preferred_name and best audio merging for video formats.
 # ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL
 
 import logging
@@ -6,263 +9,325 @@ import json
 import os
 import shutil
 import time
-from datetime import datetime
-from pyrogram import enums
-from pyrogram.types import InputMediaPhoto
+import re
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from plugins.config import Config
 from plugins.script import Translation
 from plugins.thumbnail import *
-from plugins.functions.display_progress import progress_for_pyrogram, humanbytes
+from plugins.functions.display_progress import progress_for_pyrogram, humanbytes, download_progress_edit
 from plugins.database.database import db
-from PIL import Image
 from plugins.functions.ran_text import random_char
-cookies_file = 'cookies.txt'
-# Set up logging
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+from plugins.functions.media_info import extract_media_summary, format_media_summary
+from plugins.functions.task_runtime import set_task, get_task, del_task
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
+cookies_file = 'cookies.txt' if os.path.exists('cookies.txt') else None
+
+def sanitize_filename(name: str) -> str:
+    name = name.split("?")[0].split("#")[0]
+    for c in ['/', '\\', '..', '<', '>', ':', '"', '|', '?', '*', ';', '&', '=']:
+        name = name.replace(c, '_')
+    name = name.strip().strip('.')
+    if len(name) > 200:
+        n, e = os.path.splitext(name)
+        name = n[:195] + e
+    return name or "download.mp4"
+
+def aria2c_available() -> bool:
+    try:
+        import subprocess
+        r = subprocess.run(["aria2c", "--version"], capture_output=True, text=True, timeout=5)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+ARIA = aria2c_available()
+
+def task_keyboard(paused: bool, task_id: str):
+    rows = []
+    if paused:
+        rows.append([InlineKeyboardButton("▶ Resume", callback_data=f"task|resume|{task_id}"),
+                     InlineKeyboardButton("⏹ Cancel", callback_data=f"task|cancel|{task_id}")])
+    else:
+        rows.append([InlineKeyboardButton("⏸ Pause", callback_data=f"task|pause|{task_id}"),
+                     InlineKeyboardButton("⏹ Cancel", callback_data=f"task|cancel|{task_id}")])
+    rows.append([InlineKeyboardButton("ℹ️ Media Info", callback_data=f"task|mediainfo|{task_id}")])
+    return InlineKeyboardMarkup(rows)
+
 async def youtube_dl_call_back(bot, update):
     cb_data = update.data
-    tg_send_type, youtube_dl_format, youtube_dl_ext, ranom = cb_data.split("|")
-    random1 = random_char(5)
-    
-    save_ytdl_json_path = os.path.join(Config.DOWNLOAD_LOCATION, f"{update.from_user.id}{ranom}.json")
-    
     try:
-        with open(save_ytdl_json_path, "r", encoding="utf8") as f:
-            response_json = json.load(f)
-    except FileNotFoundError as e:
-        logger.error(f"JSON file not found: {e}")
-        await update.message.delete()
-        return False
-    
-    youtube_dl_url = update.message.reply_to_message.text
-    custom_file_name = f"{response_json.get('title')}_{youtube_dl_format}.{youtube_dl_ext}"
-    youtube_dl_username = None
-    youtube_dl_password = None
-    
-    if "|" in youtube_dl_url:
-        url_parts = youtube_dl_url.split("|")
-        if len(url_parts) == 2:
-            youtube_dl_url, custom_file_name = url_parts
-        elif len(url_parts) == 4:
-            youtube_dl_url, custom_file_name, youtube_dl_username, youtube_dl_password = url_parts
-        else:
-            for entity in update.message.reply_to_message.entities:
-                if entity.type == "text_link":
-                    youtube_dl_url = entity.url
-                elif entity.type == "url":
-                    o = entity.offset
-                    l = entity.length
-                    youtube_dl_url = youtube_dl_url[o:o + l]
-                    
-        youtube_dl_url = youtube_dl_url.strip()
-        custom_file_name = custom_file_name.strip()
-        if youtube_dl_username:
-            youtube_dl_username = youtube_dl_username.strip()
-        if youtube_dl_password:
-            youtube_dl_password = youtube_dl_password.strip()
-        
-        logger.info(youtube_dl_url)
-        logger.info(custom_file_name)
-    else:
-        for entity in update.message.reply_to_message.entities:
-            if entity.type == "text_link":
-                youtube_dl_url = entity.url
-            elif entity.type == "url":
-                o = entity.offset
-                l = entity.length
-                youtube_dl_url = youtube_dl_url[o:o + l]
-
-    await update.message.edit_caption(
-        caption=Translation.DOWNLOAD_START.format(custom_file_name)
-    )
-    
-    description = Translation.CUSTOM_CAPTION_UL_FILE
-    if "fulltitle" in response_json:
-        description = response_json["fulltitle"][0:1021]
-    
-    tmp_directory_for_each_user = os.path.join(Config.DOWNLOAD_LOCATION, f"{update.from_user.id}{random1}")
-    os.makedirs(tmp_directory_for_each_user, exist_ok=True)
-    download_directory = os.path.join(tmp_directory_for_each_user, custom_file_name)
-    
-    command_to_exec = [
-        "yt-dlp",
-        "-c",
-        "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
-        "--embed-subs",
-        "-f", f"{youtube_dl_format}bestvideo+bestaudio/best",
-        "--hls-prefer-ffmpeg",
-        "--cookies", cookies_file,
-        "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        youtube_dl_url,
-        "-o", download_directory
-    ]
-    
-    if tg_send_type == "audio":
-        command_to_exec = [
-            "yt-dlp",
-            "-c",
-            "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
-            "--bidi-workaround",
-            "--extract-audio",
-            "--cookies", cookies_file,
-            "--audio-format", youtube_dl_ext,
-            "--audio-quality", youtube_dl_format,
-            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-            youtube_dl_url,
-            "-o", download_directory
-        ]
-    
-    if Config.HTTP_PROXY:
-        command_to_exec.extend(["--proxy", Config.HTTP_PROXY])
-    if youtube_dl_username:
-        command_to_exec.extend(["--username", youtube_dl_username])
-    if youtube_dl_password:
-        command_to_exec.extend(["--password", youtube_dl_password])
-    
-    command_to_exec.append("--no-warnings")
-    
-    logger.info(command_to_exec)
-    start = datetime.now()
-    
-    process = await asyncio.create_subprocess_exec(
-        *command_to_exec,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-    
-    stdout, stderr = await process.communicate()
-    e_response = stderr.decode().strip()
-    t_response = stdout.decode().strip()
-    logger.info(e_response)
-    logger.info(t_response)
-    
-    if process.returncode != 0:
-        logger.error(f"yt-dlp command failed with return code {process.returncode}")
-        await update.message.edit_caption(
-            caption=f"Error: {e_response}"
-        )
-        return False
-    
-    ad_string_to_replace = "**Invalid link !**"
-    if e_response and ad_string_to_replace in e_response:
-        error_message = e_response.replace(ad_string_to_replace, "")
-        await update.message.edit_caption(
-            text=error_message
-        )
+        tg_send_type, fmt_string, ext_hint, session_tag = cb_data.split("|")
+    except Exception:
+        logger.error("Invalid callback data: %s", cb_data)
         return False
 
-    if t_response:
-        logger.info(t_response)
+    session_path = os.path.join(Config.DOWNLOAD_LOCATION, f"{update.from_user.id}{session_tag}.json")
+    try:
+        with open(session_path, "r", encoding="utf8") as f:
+            info = json.load(f)
+    except Exception:
         try:
-            os.remove(save_ytdl_json_path)
-        except FileNotFoundError:
+            await update.message.edit_caption("❌ Session expired. Send URL again.")
+        except:
+            await update.message.edit_text("❌ Session expired. Send URL again.")
+        return False
+
+    original_url = update.message.reply_to_message.text.strip()
+    preferred = info.get("_preferred_name") or info.get("title") or "video"
+    base_name = sanitize_filename(preferred)
+    tmp_dir = os.path.join(Config.DOWNLOAD_LOCATION, f"{update.from_user.id}{random_char(5)}")
+    os.makedirs(tmp_dir, exist_ok=True)
+    output_template = os.path.join(tmp_dir, f"{base_name}.%(ext)s")
+    display_name = f"{base_name}.{ext_hint}"
+
+    task_id = f"{update.from_user.id}-{update.message.id}-{random_char(5)}"
+    start_caption = Translation.DOWNLOAD_START.format(display_name)
+    if not ARIA:
+        start_caption += "\n\n⚠️ aria2c not found – using default downloader."
+    try:
+        await update.message.edit_caption(start_caption, reply_markup=task_keyboard(False, task_id))
+    except Exception:
+        try:
+            await update.message.edit_text(start_caption, reply_markup=task_keyboard(False, task_id))
+        except Exception:
             pass
-        
-        end_one = datetime.now()
-        time_taken_for_download = (end_one - start).seconds
-        
-        if os.path.isfile(download_directory):
-            file_size = os.stat(download_directory).st_size
-        else:
-            download_directory = os.path.splitext(download_directory)[0] + "." + ".mkv"
-            if os.path.isfile(download_directory):
-                file_size = os.stat(download_directory).st_size
+
+    if tg_send_type == "audio":
+        command = [
+            "yt-dlp", "-c", "--newline", "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
+            "-f", "bestaudio/best",
+            "--extract-audio", "--audio-format", ext_hint, "--audio-quality", "0",
+            "-o", output_template,
+            "--buffer-size", "16K", "--http-chunk-size", "10M", "--retries", "10", "--fragment-retries", "10",
+            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        ]
+    else:
+        command = [
+            "yt-dlp", "-c", "--newline", "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
+            "-f", fmt_string,
+            "-o", output_template,
+            "--buffer-size", "16K", "--http-chunk-size", "10M", "--retries", "10", "--fragment-retries", "10",
+            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        ]
+
+    if cookies_file:
+        command.extend(["--cookies", cookies_file])
+    if getattr(Config, "HTTP_PROXY", None):
+        command.extend(["--proxy", Config.HTTP_PROXY])
+
+    if ARIA:
+        command.extend([
+            "--external-downloader", "aria2c",
+            "--external-downloader-args",
+            "-x 16 -s 16 -k 1M --max-connection-per-server=16 --min-split-size=1M --console-log-level=warn"
+        ])
+        prefix = "⬇️ Downloading (aria2c 🚀)"
+    else:
+        command.extend(["-N", "8"])
+        prefix = "⬇️ Downloading"
+
+    command.append(original_url)
+    logger.debug("Command: %s", " ".join(command))
+
+    start_ts = time.time()
+    process = await asyncio.create_subprocess_exec(*command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
+
+    await set_task(task_id, {
+        "task_id": task_id,
+        "user_id": update.from_user.id,
+        "command": command,
+        "process": process,
+        "tmp_dir": tmp_dir,
+        "output_template": output_template,
+        "display_name": display_name,
+        "status": "downloading",
+        "chat_id": update.message.chat.id,
+        "message_id": update.message.id,
+        "message": update.message,
+        "prefix": prefix,
+        "start_ts": start_ts,
+        "downloaded_file": None
+    })
+
+    aria_pattern = re.compile(r'\[#\d+\s+SIZE:(?P<size_done>[\d\.]+\w+)/(?P<size_total>[\d\.]+\w+)\((?P<pct>\d+)%)\s+CN:\d+\s+DL:(?P<speed>[\d\.]+\w+/s)')
+    ytdlp_patterns = [
+        re.compile(r'\[download\]\s+(\d{1,3}\.\d+)%\s+of\s+~?([\d\.]+\w+)\s+at\s+([\d\.]+\w+/s)'),
+        re.compile(r'\[download\]\s+(\d{1,3}\.\d+)%')
+    ]
+
+    async def reader():
+        last = None
+        while True:
+            line = await process.stdout.readline()
+            if not line:
+                break
+            s = line.decode(errors='ignore').strip()
+            percent = None; size_str = None; speed_str = None
+            m0 = aria_pattern.search(s)
+            if m0:
+                try:
+                    percent = float(m0.group("pct"))
+                except Exception:
+                    percent = None
+                size_str = f"{m0.group('size_done')} / {m0.group('size_total')}"
+                speed_str = m0.group("speed")
             else:
-                logger.error(f"Downloaded file not found: {download_directory}")
-                await update.message.edit_caption(
-                    caption=Translation.DOWNLOAD_FAILED
-                )
-                return False
-        
-        if file_size > Config.TG_MAX_FILE_SIZE:
-            await update.message.edit_caption(
-                caption=Translation.RCHD_TG_API_LIMIT.format(time_taken_for_download, humanbytes(file_size))
-            )
-        else:
-            await update.message.edit_caption(
-                caption=Translation.UPLOAD_START.format(custom_file_name)
-            )
-            start_time = time.time()
-            if not await db.get_upload_as_doc(update.from_user.id):
-                thumbnail = await Gthumb01(bot, update)
-                await update.message.reply_document(
-                    document=download_directory,
-                    thumb=thumbnail,
-                    caption=description,
-                    progress=progress_for_pyrogram,
-                    progress_args=(
-                        Translation.UPLOAD_START,
-                        update.message,
-                        start_time
-                    )
-                )
-            else:
-                width, height, duration = await Mdata01(download_directory)
-                thumb_image_path = await Gthumb02(bot, update, duration, download_directory)
-                await update.message.reply_video(
-                    video=download_directory,
-                    caption=description,
-                    duration=duration,
-                    width=width,
-                    height=height,
-                    supports_streaming=True,
-                    thumb=thumb_image_path,
-                    progress=progress_for_pyrogram,
-                    progress_args=(
-                        Translation.UPLOAD_START,
-                        update.message,
-                        start_time
-                    )
-                )
-            
-            if tg_send_type == "audio":
-                duration = await Mdata03(download_directory)
-                thumbnail = await Gthumb01(bot, update)
-                await update.message.reply_audio(
-                    audio=download_directory,
-                    caption=description,
-                    duration=duration,
-                    thumb=thumbnail,
-                    progress=progress_for_pyrogram,
-                    progress_args=(
-                        Translation.UPLOAD_START,
-                        update.message,
-                        start_time
-                    )
-                )
-            elif tg_send_type == "vm":
-                width, duration = await Mdata02(download_directory)
-                thumbnail = await Gthumb02(bot, update, duration, download_directory)
-                await update.message.reply_video_note(
-                    video_note=download_directory,
-                    duration=duration,
-                    length=width,
-                    thumb=thumbnail,
-                    progress=progress_for_pyrogram,
-                    progress_args=(
-                        Translation.UPLOAD_START,
-                        update.message,
-                        start_time
-                    )
-                )
-            else:
-                logger.info("✅ " + custom_file_name)
-            
-            end_two = datetime.now()
-            time_taken_for_upload = (end_two - end_one).seconds
+                for pat in ytdlp_patterns:
+                    m = pat.search(s)
+                    if m:
+                        try:
+                            percent = float(m.group(1))
+                        except Exception:
+                            percent = None
+                        if len(m.groups()) >= 2:
+                            size_str = m.group(2)
+                        if len(m.groups()) >= 3:
+                            speed_str = m.group(3)
+                        break
+            if percent is not None and (last is None or percent - last >= 0.5):
+                await download_progress_edit(update.message, display_name, percent, size_str, speed_str, start_ts, min_interval=1.0, status_prefix=prefix)
+                last = percent
+
+    reader_task = asyncio.create_task(reader())
+    await process.wait()
+    await reader_task
+
+    task = await get_task(task_id)
+    if not task or task.get("status") in ("paused", "canceled"):
+        return
+
+    downloaded = None
+    for root, _, files in os.walk(tmp_dir):
+        for f in files:
+            if f.endswith(".json"):
+                continue
+            cand = os.path.join(root, f)
+            if not downloaded or os.path.getsize(cand) > os.path.getsize(downloaded):
+                downloaded = cand
+
+    if process.returncode != 0 or not downloaded or not os.path.isfile(downloaded):
+        try:
+            await update.message.edit_caption("❌ Download failed.")
+        except Exception:
             try:
-                shutil.rmtree(tmp_directory_for_each_user)
-                os.remove(thumbnail)
-            except Exception as e:
-                logger.error(f"Error cleaning up: {e}")
-            
-            await update.message.edit_caption(
-                caption=Translation.AFTER_SUCCESSFUL_UPLOAD_MSG_WITH_TS.format(time_taken_for_download, time_taken_for_upload)
-            )
-            
-            logger.info(f"✅ Downloaded in: {time_taken_for_download} seconds")
-            logger.info(f"✅ Uploaded in: {time_taken_for_upload} seconds")
+                await update.message.edit_text("❌ Download failed.")
+            except Exception:
+                pass
+        try:
+            await del_task(task_id)
+            shutil.rmtree(tmp_dir)
+        except Exception:
+            pass
+        return False
+
+    task["downloaded_file"] = downloaded
+    await set_task(task_id, task)
+
+    file_size = os.path.getsize(downloaded)
+    dl_time = int(time.time() - start_ts)
+
+    if file_size > Config.TG_MAX_FILE_SIZE:
+        msg = Translation.RCHD_TG_API_LIMIT.format(dl_time, humanbytes(file_size))
+        try:
+            await update.message.edit_caption(msg)
+        except Exception:
+            try:
+                await update.message.edit_text(msg)
+            except Exception:
+                pass
+        try:
+            await del_task(task_id)
+            shutil.rmtree(tmp_dir)
+        except Exception:
+            pass
+        return False
+
+    media_summary = extract_media_summary(downloaded)
+    media_text = format_media_summary(media_summary)
+    try:
+        await update.message.edit_caption(f"{Translation.UPLOAD_START.format(os.path.basename(downloaded))}\n\n{media_text}", reply_markup=task_keyboard(False, task_id))
+    except Exception:
+        try:
+            await update.message.edit_text(f"{Translation.UPLOAD_START.format(os.path.basename(downloaded))}\n\n{media_text}", reply_markup=task_keyboard(False, task_id))
+        except Exception:
+            pass
+
+    up_start = time.time()
+    description = Translation.CUSTOM_CAPTION_UL_FILE
+    if info.get("fulltitle"):
+        description = info["fulltitle"][:1021]
+    elif info.get("title"):
+        description = info["title"][:1021]
+    elif info.get("description"):
+        description = info["description"][:1021]
+
+    try:
+        if tg_send_type == "audio":
+            duration = await Mdata03(downloaded)
+            thumb = await Gthumb01(bot, update)
+            await update.message.reply_audio(audio=downloaded, caption=description, duration=duration, thumb=thumb, progress=progress_for_pyrogram, progress_args=(Translation.UPLOAD_START, update.message, up_start))
+        elif tg_send_type == "vm":
+            width, duration = await Mdata02(downloaded)
+            thumb = await Gthumb02(bot, update, duration, downloaded)
+            await update.message.reply_video_note(video_note=downloaded, duration=duration, length=width, thumb=thumb, progress=progress_for_pyrogram, progress_args=(Translation.UPLOAD_START, update.message, up_start))
+        else:
+            if not await db.get_upload_as_doc(update.from_user.id):
+                thumb = await Gthumb01(bot, update)
+                await update.message.reply_document(document=downloaded, thumb=thumb, caption=description, progress=progress_for_pyrogram, progress_args=(Translation.UPLOAD_START, update.message, up_start))
+            else:
+                width, height, duration = await Mdata01(downloaded)
+                thumb = await Gthumb02(bot, update, duration, downloaded)
+                await update.message.reply_video(video=downloaded, caption=description, duration=duration, width=width, height=height, supports_streaming=True, thumb=thumb, progress=progress_for_pyrogram, progress_args=(Translation.UPLOAD_START, update.message, up_start))
+        up_time = int(time.time() - up_start)
+
+        try:
+            shutil.rmtree(tmp_dir)
+        except Exception:
+            pass
+
+        final_msg = Translation.AFTER_SUCCESSFUL_UPLOAD_MSG_WITH_TS.format(dl_time, up_time)
+        if ARIA:
+            final_msg += " (aria2c 🚀)"
+
+        compact = []
+        if media_summary.get("width") and media_summary.get("height"):
+            compact.append(f"{media_summary['width']}x{media_summary['height']}")
+        if media_summary.get("video_codec"):
+            compact.append(media_summary["video_codec"].upper())
+        if media_summary.get("audio_codec"):
+            compact.append(media_summary["audio_codec"].upper())
+        if media_summary.get("bitrate_kbps"):
+            compact.append(f"{media_summary['bitrate_kbps']}kbps")
+        compact.append(media_summary.get("size_human", ""))
+        final_msg += "\n\n" + " • ".join([p for p in compact if p])
+
+        try:
+            await update.message.edit_caption(final_msg, reply_markup=task_keyboard(True, task_id))
+        except Exception:
+            try:
+                await update.message.edit_text(final_msg, reply_markup=task_keyboard(True, task_id))
+            except Exception:
+                pass
+
+        await del_task(task_id)
+        return True
+
+    except Exception as e:
+        logger.exception("Upload failed: %s", e)
+        try:
+            await update.message.edit_caption(f"❌ Upload failed: {e}")
+        except Exception:
+            try:
+                await update.message.edit_text(f"❌ Upload failed: {e}")
+            except Exception:
+                pass
+        try:
+            shutil.rmtree(tmp_dir)
+        except Exception:
+            pass
+        await del_task(task_id)
+        return False
