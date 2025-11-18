@@ -16,7 +16,6 @@ loggers
 filetype
 tldextract
 ffmpeg-python
-ffmpeg
 aiofiles
 pyromod
 yt-dlp
