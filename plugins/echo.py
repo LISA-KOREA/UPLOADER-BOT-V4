@@ -33,38 +33,63 @@ cookies_file = 'cookies.txt'
 
 
 
-@Client.on_message(filters.private & filters.regex(pattern=".*http.*"))
+@Client.on_message(filters.private & filters.regex(r"https?://"))
 async def echo(bot, update):
-    if update.from_user.id != Config.OWNER_ID:  
+    if not update.from_user:
+        return await update.reply_text("I don't know about you sir :(")
+
+    if update.from_user.id in Config.BANNED_USERS:
+        owners = ", ".join(map(str, Config.OWNER_ID))
+        await update.reply_text(
+            f"🛑 **YOU ARE BANNED** 🛑\n\n"
+            f"**If you think this is a mistake, contact:** `{owners}`"
+        )
+        return
+
+    if update.from_user.id not in Config.OWNER_ID:
         if not await check_verification(bot, update.from_user.id) and Config.TRUE_OR_FALSE:
-            button = [[
-                InlineKeyboardButton("✓⃝ Vᴇʀɪꜰʏ ✓⃝", url=await get_token(bot, update.from_user.id, f"https://telegram.me/{Config.BOT_USERNAME}?start="))
-                ],[
-                InlineKeyboardButton("🔆 Wᴀᴛᴄʜ Hᴏᴡ Tᴏ Vᴇʀɪꜰʏ 🔆", url=f"{Config.VERIFICATION}")
-            ]]
+            buttons = [
+                [
+                    InlineKeyboardButton(
+                        "✓⃝ Vᴇʀɪꜰʏ ✓⃝",
+                        url=await get_token(
+                            bot,
+                            update.from_user.id,
+                            f"https://telegram.me/{Config.BOT_USERNAME}?start="
+                        )
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "🔆 Wᴀᴛᴄʜ Hᴏᴡ Tᴏ Vᴇʀɪꜰʏ 🔆",
+                        url=Config.VERIFICATION
+                    )
+                ]
+            ]
             await update.reply_text(
-                text="<b>Pʟᴇᴀsᴇ Vᴇʀɪꜰʏ Fɪʀsᴛ Tᴏ Usᴇ Mᴇ</b>",
+                "<b>Pʟᴇᴀsᴇ Vᴇʀɪꜰʏ Fɪʀsᴛ Tᴏ Usᴇ Mᴇ</b>",
                 protect_content=True,
-                reply_markup=InlineKeyboardMarkup(button)
+                reply_markup=InlineKeyboardMarkup(buttons)
             )
             return
+
     if Config.LOG_CHANNEL:
         try:
             log_message = await update.forward(Config.LOG_CHANNEL)
-            log_info = "Message Sender Information\n"
-            log_info += "\nFirst Name: " + update.from_user.first_name
-            log_info += "\nUser ID: " + str(update.from_user.id)
-            log_info += "\nUsername: @" + (update.from_user.username if update.from_user.username else "")
-            log_info += "\nUser Link: " + update.from_user.mention
+            log_info = (
+                "Message Sender Information\n"
+                f"\nFirst Name: {update.from_user.first_name}"
+                f"\nUser ID: {update.from_user.id}"
+                f"\nUsername: @{update.from_user.username or ''}"
+                f"\nUser Link: {update.from_user.mention}"
+            )
             await log_message.reply_text(
-                text=log_info,
+                log_info,
                 disable_web_page_preview=True,
                 quote=True
             )
-        except Exception as error:
-            print(error)
-    if not update.from_user:
-        return await update.reply_text("I don't know about you sar :(")
+        except Exception as e:
+            print(e)
     await AddUser(bot, update)
     if Config.UPDATES_CHANNEL:
         fsub = await handle_force_subscribe(bot, update)
