@@ -28,13 +28,20 @@ class Config(object):
     PROCESS_MAX_TIMEOUT = 3600
     DEF_WATER_MARK_FILE = "@UploaderXNTBot"
 
-    BANNED_USERS = set(int(x) for x in os.environ.get("BANNED_USERS", "").split())
+    ADMIN = set(
+        int(x) for x in environ.get("ADMIN", "").split()
+        if x.isdigit()
+    )
+
+    BANNED_USERS = set(
+        int(x) for x in environ.get("BANNED_USERS", "").split()
+        if x.isdigit()
+    )
 
     DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
     LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
     LOGGER = logging
-    ADMIN = set(int(x) for x in os.environ.get("ADMIN", "").split())
     OWNER_ID = int(os.environ.get("OWNER_ID", ""))
     SESSION_NAME = "UploaderXNTBot"
     UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "")
