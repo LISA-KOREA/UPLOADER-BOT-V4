@@ -136,7 +136,7 @@ async def info_handler(bot, update):
 
 @Client.on_message(filters.private & filters.command("warn"))
 async def warn(c, m):
-    if m.from_user.id in Config.OWNER_II:
+    if m.from_user.id in Config.ADMIN:
         if len(m.command) >= 3:
             try:
                 user_id = m.text.split(' ', 2)[1]
