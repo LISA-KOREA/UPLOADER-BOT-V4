@@ -34,6 +34,7 @@ class Config(object):
 
     LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
     LOGGER = logging
+    ADMIN = set(int(x) for x in os.environ.get("ADMIN", "").split())
     OWNER_ID = int(os.environ.get("OWNER_ID", ""))
     SESSION_NAME = "UploaderXNTBot"
     UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "")
