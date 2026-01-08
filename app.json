@@ -70,10 +70,12 @@
     },
     "ADMIN": {
       "description": "List of administrator user IDs",
+      "required": false
       "value": ""
     },
     "BANNED_USERS": {
       "description": "Optional list of user IDs blocked from using the bot",
+      "required": false
       "value": ""
     }
   },
