@@ -67,6 +67,14 @@
     "VERIFICATION": {
       "description": "Add your verification video link",
       "value": ""
+    },
+    "ADMIN": {
+      "description": "List of administrator user IDs",
+      "value": ""
+    },
+    "BANNED_USERS": {
+      "description": "Optional list of user IDs blocked from using the bot",
+      "value": ""
     }
   },
   "addons": [
