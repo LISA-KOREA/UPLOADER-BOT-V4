@@ -33,7 +33,7 @@ cookies_file = 'cookies.txt'
 
 
 
-@Client.on_message(filters.private & filters.regex(r"https?://"))
+@Client.on_message(filters.private & filters.regex(pattern=".*http.*"))
 async def echo(bot, update):
     if not update.from_user:
         return await update.reply_text("I don't know about you sir :(")
