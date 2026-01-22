@@ -13,4 +13,3 @@ If you discover a security issue:
 - Report it privately to the repository maintainer
 
 Valid reports will be reviewed and fixed as soon as possible.
-
