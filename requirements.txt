@@ -23,3 +23,4 @@ pytube
 flask
 gunicorn==22.0.0
 werkzeug>=3.1.4
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
