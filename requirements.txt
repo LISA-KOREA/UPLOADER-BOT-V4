@@ -22,4 +22,4 @@ yt-dlp
 pytube
 flask
 gunicorn==22.0.0
-werkzeug>=3.1.4
+
