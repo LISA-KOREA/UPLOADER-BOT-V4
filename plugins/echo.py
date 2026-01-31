@@ -1,6 +1,8 @@
 # ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL | TG-SORRY
 
-
+import os
+import time
+import random
 import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -11,9 +13,6 @@ from plugins.config import Config
 from plugins.script import Translation
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 from pyrogram import filters
-import os
-import time
-import random
 from pyrogram import enums
 from pyrogram import Client
 from plugins.peerfix import ensure_peer
