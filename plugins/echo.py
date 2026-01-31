@@ -16,6 +16,7 @@ import time
 import random
 from pyrogram import enums
 from pyrogram import Client
+from plugins.peerfix import ensure_peer
 from plugins.functions.verify import verify_user, check_token, check_verification, get_token
 from plugins.functions.forcesub import handle_force_subscribe
 from plugins.functions.display_progress import humanbytes
@@ -50,6 +51,7 @@ async def echo(bot, update):
             return
     if Config.LOG_CHANNEL:
         try:
+            await ensure_peer(bot, Config.LOG_CHANNEL)
             log_message = await update.forward(Config.LOG_CHANNEL)
             log_info = "Message Sender Information\n"
             log_info += "\nFirst Name: " + update.from_user.first_name
