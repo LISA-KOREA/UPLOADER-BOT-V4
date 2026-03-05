@@ -29,7 +29,6 @@ if __name__ == "__main__":
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
-        upload_boost=True,
         sleep_threshold=300,
         plugins=plugins
     )
