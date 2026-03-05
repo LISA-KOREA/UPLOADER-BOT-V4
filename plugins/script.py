@@ -2,7 +2,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 class Translation(object):
 
-        START_TEXT = """👋 Hello <b>{}</b> 
+    START_TEXT = """👋 Hello <b>{}</b> 
 <blockquote>
 I'm a Telegram URL Uploader Bot 
 Send me a direct link and I'll upload it to Telegram  
