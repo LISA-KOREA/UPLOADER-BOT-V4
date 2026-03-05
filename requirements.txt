@@ -9,7 +9,7 @@ motor
 pytz
 utils
 pymongo
-pyroblack
+pyroblock
 dnspython
 psutil
 loggers
