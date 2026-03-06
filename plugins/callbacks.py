@@ -31,6 +31,7 @@ async def button(bot, update):
         await update.message.edit(
             text=Translation.ABOUT_TEXT,
             reply_markup=Translation.ABOUT_BUTTONS,
+            disable_web_page_preview=True,
         )
     elif "refreshForceSub" in update.data:
         if Config.UPDATES_CHANNEL:
