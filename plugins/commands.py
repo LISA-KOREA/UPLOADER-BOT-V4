@@ -36,6 +36,7 @@ async def start(bot, update):
         await update.reply_text(
             text=Translation.START_TEXT.format(update.from_user.mention),
             reply_markup=Translation.START_BUTTONS,
+            reply_to_message_id=message.id
         )
         return
     data = update.command[1]
@@ -51,13 +52,15 @@ async def start(bot, update):
         if is_valid == True:
             await update.reply_text(
                 text=f"<b>Hᴇʏ {update.from_user.mention} 👋,\nʏᴏᴜ Aʀᴇ Sᴜᴄᴄᴇssғᴜʟʟʏ Vᴇʀɪғɪᴇᴅ !\n\nNᴏᴡ Yᴏᴜ Uᴘʟᴏᴀᴅ Fɪʟᴇs Aɴᴅ Vɪᴅᴇᴏs Tɪʟʟ Tᴏᴅᴀʏ Mɪᴅɴɪɢʜᴛ.</b>",
-                protect_content=True
+                protect_content=True,
+                reply_to_message_id=message.id
             )
             await verify_user(bot, userid, token)
         else:
             return await update.reply_text(
                 text="<b>Exᴘɪʀᴇᴅ Lɪɴᴋ Oʀ ⵊɴᴠᴀʟɪᴅ Lɪɴᴋ !</b>",
-                protect_content=True
+                protect_content=True,
+                reply_to_message_id=message.id
             )
 
 
