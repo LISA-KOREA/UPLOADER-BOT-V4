@@ -8,7 +8,7 @@ I'm a Telegram URL Uploader Bot
 Send me a direct link and I'll upload it to Telegram  
 as a file or video.
 </blockquote>
-Use the help button to learn how to use me!
+<b>Use the help button to learn how to use me!</b>
 """
 
     
