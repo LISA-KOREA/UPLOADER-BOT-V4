@@ -189,5 +189,4 @@ Check How To Make MONGODB URL or [YouTube](https://youtu.be/VudXkbirhM8?feature=
 
 * [Lisa (Me)](https://github.com/LISA-KOREA)
 * [Clinton Abraham](https://github.com/Clinton-Abraham)
-* [Tech VJ](https://github.com/VJBots)
 
