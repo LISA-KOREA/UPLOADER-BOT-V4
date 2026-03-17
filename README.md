@@ -1,4 +1,4 @@
-## URL Uᴘʟᴏᴀᴅᴇʀ ʙᴏᴛ V4 🚀
+## 🚀 Uploader Bot V4
 
 
 <p align="center">
