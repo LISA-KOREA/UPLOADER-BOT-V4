@@ -2,10 +2,8 @@
 
 
 <p align="center">
-  <img src="logo.png" width="200"/>
+  <img src="logo.png" width="600"/>
 </p>
-
-<h1 align="center">Uploader Bot V4</h1>
 
 
 [![GitHub forks](https://img.shields.io/github/forks/LISA-KOREA/UPLOADER-BOT-V4?&style=flat-square&logo=github)](https://github.com/LISA-KOREA/UPLOADER-BOT-V4/fork)
