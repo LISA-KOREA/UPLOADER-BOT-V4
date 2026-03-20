@@ -109,6 +109,7 @@ If you have any questions or would like to sponsor this project in another way, 
 </details>
 
 ### VPS
+<b><details><summary>Tap On Me For Deploy</summary>
 
 ```
 sudo apt update && sudo apt upgrade -y
@@ -120,7 +121,8 @@ pip3 install -r requirements.txt
 
 python3 bot.py
 ```
-
+</b>
+</details>
 ### How To Create YouTube Video
 
 <b><details><summary>Tap To watch</summary>
