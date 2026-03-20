@@ -108,6 +108,19 @@ If you have any questions or would like to sponsor this project in another way, 
 </b>
 </details>
 
+### VPS
+
+```
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3-pip ffmpeg git -y
+
+git clone https://github.com/LISA-KOREA/UPLOADER-BOT-V4
+cd UPLOADER-BOT-V4
+pip3 install -r requirements.txt
+
+python3 bot.py
+```
+
 ### How To Create YouTube Video
 
 <b><details><summary>Tap To watch</summary>
