@@ -101,7 +101,7 @@ async def viewthumbnail(bot, update):
         photo=thumbnail,
         caption=f"YOUR THUMBNAIL 🏞",
         reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("🗑️ 𝙳𝙴𝙻𝙴𝚃𝙴 𝚃𝙷𝚄𝙼𝙱𝙽𝙰𝙸𝙻", callback_data="deleteThumbnail")]]
+                    [[InlineKeyboardButton("🗑️ 𝙳𝙴𝙻𝙴𝚃𝙴 𝚃𝙷𝚄𝙼𝙱𝙽𝙰𝙸𝙻", callback_data="deleteThumbnail", style=enums.ButtonStyle.DANGER)]]
                 ),
          )
     else:
