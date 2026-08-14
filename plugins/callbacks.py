@@ -55,10 +55,10 @@ async def button(bot, update):
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                                InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link)
+                                InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link, style=enums.ButtonStyle.PRIMARY)
                             ],
                             [
-                                InlineKeyboardButton("🔄 Refresh 🔄", callback_data="refreshForceSub")
+                                InlineKeyboardButton("🔄 Refresh 🔄", callback_data="refreshForceSub", style=enums.ButtonStyle.SUCCESS)
                             ]
                         ]
                     )
@@ -86,7 +86,7 @@ async def button(bot, update):
             await bot.send_photo(update.message.chat.id, thumbnail, "Custom Thumbnail",
                                reply_markup=types.InlineKeyboardMarkup([[
                                    types.InlineKeyboardButton("Delete Thumbnail",
-                                                              callback_data="deleteThumbnail")
+                                                              callback_data="deleteThumbnail", style=enums.ButtonStyle.DANGER)
                                ]]))
     elif update.data == "deleteThumbnail":
         await db.set_thumbnail(update.from_user.id, None)
