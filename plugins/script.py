@@ -28,8 +28,8 @@ as a file or video.
     ABOUT_TEXT = """
 ╭───────────────⍟
 │ 📛 **Bot Name** : URL Uploader Bot
-│ 📢 **Framework** : <a href="https://docs.pyrogram.org/">PyroBlock 2.7.5</a>
-│ 💻 **Language** : <a href="https://www.python.org">Python 3.13.12</a>
+│ 📢 **Framework** : <a href="https://docs.pyrogram.org/">PyroBlock 2.3.79</a>
+│ 💻 **Language** : <a href="https://www.python.org">Python 3.14.7</a>
 │ 💾 **Database** : <a href="https://cloud.mongodb.com">MongoDB</a>
 │ 🚨 **Support Group** : <a href="https://t.me/NT_BOTS_SUPPORT">NT Support</a>
 │ 🥏 **Channel** : <a href="https://t.me/NT_BOT_CHANNEL">NT Bot Channel</a>
@@ -67,47 +67,47 @@ as a file or video.
 
     START_BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('🛠️ Settings', callback_data='OpenSettings')
+        InlineKeyboardButton('🛠️ Settings', callback_data='OpenSettings', style=enums.ButtonStyle.SUCCESS)
         ],[
-        InlineKeyboardButton('🤝 Help', callback_data='help'),
-        InlineKeyboardButton('ℹ️ About', callback_data='about')
+        InlineKeyboardButton('🤝 Help', callback_data='help', style=enums.ButtonStyle.PRIMARY),
+        InlineKeyboardButton('ℹ️ About', callback_data='about', style=enums.ButtonStyle.PRIMARY)
         ],[
-        InlineKeyboardButton('✖️ Close', callback_data='close')
+        InlineKeyboardButton('✖️ Close', callback_data='close', style=enums.ButtonStyle.DANGER)
         ]]
     )
     HELP_BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('🛠️ Settings', callback_data='OpenSettings')
+        InlineKeyboardButton('🛠️ Settings', callback_data='OpenSettings', style=enums.ButtonStyle.SUCCESS)
         ],[
-        InlineKeyboardButton('🔙 Back', callback_data='home'),
-        InlineKeyboardButton('ℹ️ About', callback_data='about')
+        InlineKeyboardButton('🔙 Back', callback_data='home', style=enums.ButtonStyle.PRIMARY),
+        InlineKeyboardButton('ℹ️ About', callback_data='about', style=enums.ButtonStyle.PRIMARY)
         ],[
-        InlineKeyboardButton('✖️ Close', callback_data='close')
+        InlineKeyboardButton('✖️ Close', callback_data='close', style=enums.ButtonStyle.DANGER)
         ]]
     )
     ABOUT_BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('🛠️ Settings', callback_data='OpenSettings')
+        InlineKeyboardButton('🛠️ Settings', callback_data='OpenSettings', style=enums.ButtonStyle.SUCCESS)
         ],[
-        InlineKeyboardButton('🔙 Back', callback_data='home'),
-        InlineKeyboardButton('🤝 Help', callback_data='help')
+        InlineKeyboardButton('🔙 Back', callback_data='home', style=enums.ButtonStyle.PRIMARY),
+        InlineKeyboardButton('🤝 Help', callback_data='help', style=enums.ButtonStyle.PRIMARY)
         ],[
-        InlineKeyboardButton('✖️ Close', callback_data='close')
+        InlineKeyboardButton('✖️ Close', callback_data='close', style=enums.ButtonStyle.DANGER)
         ]]
     )
     PLANS_BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('ℹ️ About', callback_data='about')
+        InlineKeyboardButton('ℹ️ About', callback_data='about', style=enums.ButtonStyle.SUCCESS)
         ],[
-        InlineKeyboardButton('🔙 Back', callback_data='home'),
-        InlineKeyboardButton('🤝 Help', callback_data='help')
+        InlineKeyboardButton('🔙 Back', callback_data='home', style=enums.ButtonStyle.PRIMARY),
+        InlineKeyboardButton('🤝 Help', callback_data='help', style=enums.ButtonStyle.PRIMARY)
         ],[
-        InlineKeyboardButton('✖️ Close', callback_data='close')
+        InlineKeyboardButton('✖️ Close', callback_data='close', style=enums.ButtonStyle.DANGER)
         ]]
    )
     BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('✖️ Close', callback_data='close')
+        InlineKeyboardButton('✖️ Close', callback_data='close', style=enums.ButtonStyle.DANGER)
         ]]
     )
     INCORRECT_REQUEST = """Error"""
