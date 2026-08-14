@@ -1,6 +1,6 @@
 import asyncio
 from pyrogram import types, errors, filters
-from pyrogram.types import Message
+from pyrogram.types import Message, LinkPreviewOptions
 from plugins.config import Config
 from plugins.database.database import db
 from plugins.database.add import AddUser
@@ -30,7 +30,7 @@ async def OpenSettings(m: "types.Message"):
         await m.edit(
             text="**CURRENT SETTINGS 👇**",
             reply_markup=types.InlineKeyboardMarkup(buttons_markup),
-            disable_web_page_preview=True,
+            link_preview_options=LinkPreviewOptions(is_disabled=True),
         )
     except errors.MessageNotModified: pass
     except errors.FloodWait as e:
