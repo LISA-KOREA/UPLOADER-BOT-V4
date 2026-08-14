@@ -32,7 +32,7 @@ async def button(bot, update):
         await update.message.edit(
             text=Translation.ABOUT_TEXT,
             reply_markup=Translation.ABOUT_BUTTONS,
-            disable_web_page_preview=True,
+            link_preview_options=LinkPreviewOptions(is_disabled=True),
         )
     elif "refreshForceSub" in update.data:
         if Config.UPDATES_CHANNEL:
@@ -67,7 +67,7 @@ async def button(bot, update):
             except Exception:
                 await update.message.edit(
                     text="Something Went Wrong. Contact My [Support Group](https://t.me/NT_BOTS_SUPPORT)",
-                    disable_web_page_preview=True
+                    link_preview_options=LinkPreviewOptions(is_disabled=True)
                 )
                 return
         await update.message.edit(
@@ -96,7 +96,7 @@ async def button(bot, update):
         await update.message.edit(
             text=Translation.TEXT,
             reply_markup=Translation.BUTTONS,
-            disable_web_page_preview=True
+            link_preview_options=LinkPreviewOptions(is_disabled=True)
         )
 
     elif update.data == "triggerGenSS":
