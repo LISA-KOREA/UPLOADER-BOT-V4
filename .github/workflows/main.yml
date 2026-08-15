@@ -8,45 +8,59 @@ on:
   issue_comment:
     types: [created]
 
-permissions:  # ✅ Add this section to grant necessary permissions
+permissions:
   issues: write
   pull-requests: write
 
 jobs:
   comment:
     runs-on: ubuntu-latest
+
     steps:
       - name: Post a welcome comment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}  # Ensure token is passed
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const payload = context.payload;
-            let eventType = "";
+
+            // Don't reply to bot comments
+            if (payload.comment?.user?.type === "Bot") {
+              console.log("Skipping bot comment.");
+              return;
+            }
+
             let issueNumber = null;
             let message = "";
 
-            if (payload.issue) {
-              eventType = "issue";
+            // New issue
+            if (context.eventName === "issues") {
               issueNumber = payload.issue.number;
               message = "🎉 Thanks for opening an issue! Our team will review it soon.";
-            } else if (payload.pull_request) {
-              eventType = "pull request";
+            }
+
+            // New pull request
+            else if (context.eventName === "pull_request") {
               issueNumber = payload.pull_request.number;
               message = "🚀 Thanks for your pull request! We'll review and merge if everything looks good.";
-            } else if (payload.comment) {
-              eventType = "comment";
-              issueNumber = payload.issue ? payload.issue.number : (payload.pull_request ? payload.pull_request.number : null);
+            }
+
+            // New issue/PR comment
+            else if (context.eventName === "issue_comment") {
+              issueNumber = payload.issue.number;
               message = "💬 Thanks for your comment! We'll take it into account.";
             }
 
-            if (issueNumber) {
-              github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-                body: message
-              });
-            } else {
+            if (!issueNumber) {
               console.log("⚠️ No valid issue or pull request number found.");
+              return;
             }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: message
+            });
+
+            console.log(`✅ Comment added to #${issueNumber}`);
