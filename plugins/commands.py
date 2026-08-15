@@ -9,6 +9,7 @@ from plugins.config import *
 from asyncio import TimeoutError
 from pyrogram.types import Message 
 from plugins.config import Config
+from pyrogram import enums
 from plugins.script import Translation
 from plugins.database.add import AddUser
 from plugins.database.database import db
