@@ -17,7 +17,7 @@ from pyrogram import Client, filters, types, errors
 from plugins.functions.forcesub import handle_force_subscribe
 from plugins.settings.settings import OpenSettings
 from plugins.functions.verify import verify_user, check_token
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery, ForceReply
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery, ForceReply, LinkPreviewOptions
 
 
 
@@ -69,7 +69,7 @@ async def help_bot(_, m: Message):
     return await m.reply_text(
         Translation.HELP_TEXT,
         reply_markup=Translation.HELP_BUTTONS,
-        disable_web_page_preview=True,
+       link_preview_options=LinkPreviewOptions(is_disabled=True),
     )
 
 @Client.on_message(filters.command("about", [".", "/"]) & filters.private)
@@ -78,7 +78,7 @@ async def aboutme(_, m: Message):
     return await m.reply_text(
         Translation.ABOUT_TEXT,
         reply_markup=Translation.ABOUT_BUTTONS,
-        disable_web_page_preview=True,
+        link_preview_options=LinkPreviewOptions(is_disabled=True),
     )
 
 @Client.on_message(filters.private & filters.reply & filters.text)
@@ -131,7 +131,7 @@ async def info_handler(bot, update):
     await update.reply_text(  
         text=Translation.INFO_TEXT.format(update.from_user.first_name, last_name, update.from_user.username, update.from_user.id, update.from_user.mention, update.from_user.dc_id, update.from_user.language_code, update.from_user.status), 
         reply_markup=Translation.BUTTONS,           
-        disable_web_page_preview=True
+        link_preview_options=LinkPreviewOptions(is_disabled=True)
     )
 
 

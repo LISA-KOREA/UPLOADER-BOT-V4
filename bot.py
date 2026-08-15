@@ -4,6 +4,15 @@
 import os
 from plugins.config import Config
 from pyrogram import Client
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
+logging.getLogger('pymongo').setLevel(logging.WARNING)
+logging.getLogger("aiosqlite").setLevel(logging.WARNING)
+logging.getLogger("requests_cache").setLevel(logging.WARNING)
 
 if __name__ == "__main__":
 

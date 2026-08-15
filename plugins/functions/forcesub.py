@@ -3,14 +3,14 @@ import asyncio
 from plugins.config import Config
 from pyrogram import Client
 from pyrogram.errors import FloodWait, UserNotParticipant, ChatAdminRequired, PeerIdInvalid, ChannelInvalid
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, LinkPreviewOptions
 
 async def handle_force_subscribe(bot, message):
     if not Config.UPDATES_CHANNEL:
         await bot.send_message(
             chat_id=message.from_user.id,
             text="Updates channel not configured.\nPlease contact the admin.",
-            disable_web_page_preview=True,
+            link_preview_options=LinkPreviewOptions(is_disabled=True),
         )
         return 400
 
@@ -23,7 +23,7 @@ async def handle_force_subscribe(bot, message):
         await bot.send_message(
             chat_id=message.from_user.id,
             text="Bot is not properly configured or missing access to the Updates Channel.\nPlease contact the admin!",
-            disable_web_page_preview=True,
+            link_preview_options=LinkPreviewOptions(is_disabled=True),
         )
         return 400
 
@@ -33,7 +33,7 @@ async def handle_force_subscribe(bot, message):
             await bot.send_message(
                 chat_id=message.from_user.id,
                 text="Sorry, you are banned from using this bot.",
-                disable_web_page_preview=True,
+                link_preview_options=LinkPreviewOptions(is_disabled=True),
             )
             return 400
     except UserNotParticipant:
@@ -42,8 +42,8 @@ async def handle_force_subscribe(bot, message):
             text="Please join the Updates Channel to use this bot!",
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton("Join Channel", url=invite_link.invite_link)],
-                    [InlineKeyboardButton("Refresh", callback_data="refreshForceSub")]
+                    [InlineKeyboardButton("Join Channel", url=invite_link.invite_link, style=enums.ButtonStyle.PRIMARY)],
+                    [InlineKeyboardButton("Refresh", callback_data="refreshForceSub", style=enums.ButtonStyle.SUCCESS)]
                 ]
             ),
         )
@@ -52,6 +52,6 @@ async def handle_force_subscribe(bot, message):
         await bot.send_message(
             chat_id=message.from_user.id,
             text="An unexpected error occurred.\nPlease contact support.",
-            disable_web_page_preview=True,
+            link_preview_options=LinkPreviewOptions(is_disabled=True),
         )
         return 400

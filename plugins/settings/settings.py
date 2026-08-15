@@ -1,6 +1,6 @@
 import asyncio
 from pyrogram import types, errors, filters
-from pyrogram.types import Message
+from pyrogram.types import Message, LinkPreviewOptions
 from plugins.config import Config
 from plugins.database.database import db
 from plugins.database.add import AddUser
@@ -16,21 +16,21 @@ async def OpenSettings(m: "types.Message"):
     thumbnail = user_data.get("thumbnail", None)
     buttons_markup = [
         [types.InlineKeyboardButton(f" {'📹 VIDEO' if upload_as_doc else '📁 DOCUMENT'}",
-                                    callback_data="triggerUploadMode")],
+                                    callback_data="triggerUploadMode", style=enums.ButtonStyle.SUCCESS)],
         [types.InlineKeyboardButton(f"{'🏞 CHANGE' if thumbnail else '🏞 SET'} THUMBNAIL",
-                                    callback_data="setThumbnail")]
+                                    callback_data="setThumbnail", style=enums.ButtonStyle.SUCCESS)]
     ]
     if thumbnail:
         buttons_markup.append([types.InlineKeyboardButton("🏞 SHOW THUMBNAIL",
-                                                          callback_data="showThumbnail")])
+                                                          callback_data="showThumbnail", style=enums.ButtonStyle.SUCCESS)])
     buttons_markup.append([types.InlineKeyboardButton("🔙 BACK", 
-                                                      callback_data="home")])
+                                                      callback_data="home", style=enums.ButtonStyle.PRIMARY)])
 
     try:
         await m.edit(
             text="**CURRENT SETTINGS 👇**",
             reply_markup=types.InlineKeyboardMarkup(buttons_markup),
-            disable_web_page_preview=True,
+            link_preview_options=LinkPreviewOptions(is_disabled=True),
         )
     except errors.MessageNotModified: pass
     except errors.FloodWait as e:

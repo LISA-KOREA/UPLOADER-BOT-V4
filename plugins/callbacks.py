@@ -32,7 +32,7 @@ async def button(bot, update):
         await update.message.edit(
             text=Translation.ABOUT_TEXT,
             reply_markup=Translation.ABOUT_BUTTONS,
-            disable_web_page_preview=True,
+            link_preview_options=LinkPreviewOptions(is_disabled=True),
         )
     elif "refreshForceSub" in update.data:
         if Config.UPDATES_CHANNEL:
@@ -55,10 +55,10 @@ async def button(bot, update):
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                                InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link)
+                                InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link, style=enums.ButtonStyle.PRIMARY)
                             ],
                             [
-                                InlineKeyboardButton("🔄 Refresh 🔄", callback_data="refreshForceSub")
+                                InlineKeyboardButton("🔄 Refresh 🔄", callback_data="refreshForceSub", style=enums.ButtonStyle.SUCCESS)
                             ]
                         ]
                     )
@@ -67,7 +67,7 @@ async def button(bot, update):
             except Exception:
                 await update.message.edit(
                     text="Something Went Wrong. Contact My [Support Group](https://t.me/NT_BOTS_SUPPORT)",
-                    disable_web_page_preview=True
+                    link_preview_options=LinkPreviewOptions(is_disabled=True)
                 )
                 return
         await update.message.edit(
@@ -86,7 +86,7 @@ async def button(bot, update):
             await bot.send_photo(update.message.chat.id, thumbnail, "Custom Thumbnail",
                                reply_markup=types.InlineKeyboardMarkup([[
                                    types.InlineKeyboardButton("Delete Thumbnail",
-                                                              callback_data="deleteThumbnail")
+                                                              callback_data="deleteThumbnail", style=enums.ButtonStyle.DANGER)
                                ]]))
     elif update.data == "deleteThumbnail":
         await db.set_thumbnail(update.from_user.id, None)
@@ -96,7 +96,7 @@ async def button(bot, update):
         await update.message.edit(
             text=Translation.TEXT,
             reply_markup=Translation.BUTTONS,
-            disable_web_page_preview=True
+            link_preview_options=LinkPreviewOptions(is_disabled=True)
         )
 
     elif update.data == "triggerGenSS":
