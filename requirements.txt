@@ -5,10 +5,10 @@ Pillow
 requests
 tgcryptos
 olefile
-motor
+motor>=3.6.0
+pymongo<4.10
 pytz
 utils
-pymongo
 pyroblock
 dnspython
 psutil
@@ -17,7 +17,7 @@ filetype
 tldextract
 ffmpeg-python
 aiofiles
-pyromod
+pyromod==1.2
 yt-dlp
 pytube
 flask
