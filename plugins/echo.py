@@ -23,7 +23,7 @@ from plugins.functions.help_uploadbot import DownLoadFile
 from plugins.functions.display_progress import progress_for_pyrogram, humanbytes, TimeFormatter
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, LinkPreviewOptions
 from pyrogram.errors import UserNotParticipant
 from plugins.functions.ran_text import random_char
 from plugins.database.database import db
@@ -38,9 +38,9 @@ async def echo(bot, update):
     if update.from_user.id != Config.OWNER_ID:  
         if not await check_verification(bot, update.from_user.id) and Config.TRUE_OR_FALSE:
             button = [[
-                InlineKeyboardButton("✓⃝ Vᴇʀɪꜰʏ ✓⃝", url=await get_token(bot, update.from_user.id, f"https://telegram.me/{Config.BOT_USERNAME}?start="))
+                InlineKeyboardButton("✓⃝ Vᴇʀɪꜰʏ ✓⃝", url=await get_token(bot, update.from_user.id, f"https://telegram.me/{Config.BOT_USERNAME}?start="), style=enums.ButtonStyle.SUCCESS)
                 ],[
-                InlineKeyboardButton("🔆 Wᴀᴛᴄʜ Hᴏᴡ Tᴏ Vᴇʀɪꜰʏ 🔆", url=f"{Config.VERIFICATION}")
+                InlineKeyboardButton("🔆 Wᴀᴛᴄʜ Hᴏᴡ Tᴏ Vᴇʀɪꜰʏ 🔆", url=f"{Config.VERIFICATION}", style=enums.ButtonStyle.PRIMARY)
             ]]
             await update.reply_text(
                 text="<b>Pʟᴇᴀsᴇ Vᴇʀɪꜰʏ Fɪʀsᴛ Tᴏ Usᴇ Mᴇ</b>",
@@ -59,7 +59,7 @@ async def echo(bot, update):
             log_info += "\nUser Link: " + update.from_user.mention
             await log_message.reply_text(
                 text=log_info,
-                disable_web_page_preview=True,
+                link_preview_options=LinkPreviewOptions(is_disabled=True),
                 quote=True
             )
         except Exception as error:
@@ -221,7 +221,8 @@ async def echo(bot, update):
                     ikeyboard = [
                         InlineKeyboardButton(
                             "📁 " + format_string + " " + format_ext + " " + humanbytes(size) + " ",
-                            callback_data=(cb_string_video).encode("UTF-8")
+                            callback_data=(cb_string_video).encode("UTF-8"),
+                            style=enums.ButtonStyle.SUCCESS
                         )
                     ]
                     """if duration is not None:
@@ -241,7 +242,8 @@ async def echo(bot, update):
                             "📁 [" +
                             "] ( " +
                             humanbytes(size) + " )",
-                            callback_data=(cb_string_video).encode("UTF-8")
+                            callback_data=(cb_string_video).encode("UTF-8"),
+                            style=enums.ButtonStyle.SUCCESS
                         )
                     ]
                 inline_keyboard.append(ikeyboard)
@@ -251,17 +253,17 @@ async def echo(bot, update):
                 cb_string_320 = "{}|{}|{}|{}".format("audio", "320k", "mp3", randem)
                 inline_keyboard.append([
                     InlineKeyboardButton(
-                        "🎵 ᴍᴘ𝟹 " + "(" + "64 ᴋʙᴘs" + ")", callback_data=cb_string_64.encode("UTF-8")),
+                        "🎵 ᴍᴘ𝟹 " + "(" + "64 ᴋʙᴘs" + ")", callback_data=cb_string_64.encode("UTF-8"), style=enums.ButtonStyle.SUCCESS),
                     InlineKeyboardButton(
-                        "🎵 ᴍᴘ𝟹 " + "(" + "128 ᴋʙᴘs" + ")", callback_data=cb_string_128.encode("UTF-8"))
+                        "🎵 ᴍᴘ𝟹 " + "(" + "128 ᴋʙᴘs" + ")", callback_data=cb_string_128.encode("UTF-8"), style=enums.ButtonStyle.SUCCESS)
                 ])
                 inline_keyboard.append([
                     InlineKeyboardButton(
-                        "🎵 ᴍᴘ𝟹 " + "(" + "320 ᴋʙᴘs" + ")", callback_data=cb_string_320.encode("UTF-8"))
+                        "🎵 ᴍᴘ𝟹 " + "(" + "320 ᴋʙᴘs" + ")", callback_data=cb_string_320.encode("UTF-8"), style=enums.ButtonStyle.SUCCESS)
                 ])
                 inline_keyboard.append([                 
                     InlineKeyboardButton(
-                        "🔒 ᴄʟᴏsᴇ", callback_data='close')               
+                        "🔒 ᴄʟᴏsᴇ", callback_data='close', style=enums.ButtonStyle.DANGER)               
                 ])
         else:
             format_id = response_json["format_id"]
@@ -273,7 +275,8 @@ async def echo(bot, update):
             inline_keyboard.append([
                 InlineKeyboardButton(
                     "📁 Document",
-                    callback_data=(cb_string_video).encode("UTF-8")
+                    callback_data=(cb_string_video).encode("UTF-8"),
+                    style=enums.ButtonStyle.SUCCESS
                 )
             ])
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
@@ -295,7 +298,8 @@ async def echo(bot, update):
         inline_keyboard.append([
             InlineKeyboardButton(
                 "📁 ᴍᴇᴅɪᴀ",
-                callback_data=(cb_string_video).encode("UTF-8")
+                callback_data=(cb_string_video).encode("UTF-8"),
+                style=enums.ButtonStyle.SUCCESS
             )
         ])
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
