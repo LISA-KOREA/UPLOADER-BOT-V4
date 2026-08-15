@@ -2,6 +2,7 @@ import os
 import asyncio
 from plugins.config import Config
 from pyrogram import Client
+from pyrogram import enums
 from pyrogram.errors import FloodWait, UserNotParticipant, ChatAdminRequired, PeerIdInvalid, ChannelInvalid
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, LinkPreviewOptions
 
