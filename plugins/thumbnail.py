@@ -13,7 +13,7 @@ import numpy
 import os
 from PIL import Image
 import time
-
+from pyrogram import enums
 # the Strings used for this "thing"
 from plugins.script import Translation
 from pyrogram import Client
