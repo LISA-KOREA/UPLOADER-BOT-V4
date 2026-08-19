@@ -52,7 +52,6 @@ Maintaining and improving this project takes time and resources. If you find thi
 - **Bitcoin**: `1DPtf1xkq7aBriCBwDHNydSfzQT2PccFmj`  
 - **Tron (TRC20)**: `THPYzzchV2fssaw5RE4TxL8NxJpfctw46J`  
 - **Payeer**: `P1113797003`  
-- **PayPal**: [Click to Pay](https://www.paypal.me/lisajobin)
 
 ### Why Donate?
 
