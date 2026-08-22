@@ -41,17 +41,13 @@ Maintaining and improving this project takes time and resources. If you find thi
 ### Payment Methods
 
 - **UPI / GPay / Paytm / PhonePe**
-- **PayPal** (International)
-- **Credit/Debit Cards** (via PayPal)
 - **Cryptocurrency**: Bitcoin, Tron (TRC20)
-- **Payeer**
 
 ### Payment Details
 
-- **UPI ID**: `jobinjustin2002-1@okaxis`  
+- **UPI ID**: `pdi@ptyes`  
 - **Bitcoin**: `1DPtf1xkq7aBriCBwDHNydSfzQT2PccFmj`  
-- **Tron (TRC20)**: `THPYzzchV2fssaw5RE4TxL8NxJpfctw46J`  
-- **Payeer**: `P1113797003`  
+- **Gram (Tron) (TRC20)**: `UQB7XptWjgG8yzXdxZE6co-o8UXJSll8X0OOI8-DXWsUSxOY`  
 
 ### Why Donate?
 
