@@ -85,6 +85,8 @@
     "url": "https://github.com/heroku/heroku-buildpack-activestorage-preview"
   }, {
     "url": "heroku/python"
+  }, {
+    "url": "https://github.com/chibat/heroku-buildpack-deno.git"
   }],
   "formation": {
     "worker": {
