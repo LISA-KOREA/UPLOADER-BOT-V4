@@ -125,6 +125,7 @@ async def echo(bot, update):
             "--no-warnings",
             "--allow-dynamic-mpd",
             "--no-check-certificate",
+            "--js-runtimes", "deno",
             "-j",
             url,
             "--proxy", Config.HTTP_PROXY
@@ -135,6 +136,7 @@ async def echo(bot, update):
             "--no-warnings",
             "--allow-dynamic-mpd",
             "--no-check-certificate",
+            "--js-runtimes", "deno",
             "-j",
             url,
             "--geo-bypass-country",
