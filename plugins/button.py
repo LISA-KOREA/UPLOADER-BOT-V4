@@ -104,11 +104,12 @@ async def youtube_dl_call_back(bot, update):
             "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
             "--bidi-workaround",
             "--extract-audio",
+            "--extractor-args", "youtube:player_client=web,web_embedded,tv",
             "--js-runtimes", "deno",
+            "--remote-components", "ejs:github",
             "--cookies", cookies_file,
             "--audio-format", youtube_dl_ext,
             "--audio-quality", youtube_dl_format,
-            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             youtube_dl_url,
             "-o", download_directory
         ]
@@ -118,11 +119,12 @@ async def youtube_dl_call_back(bot, update):
             "-c",
             "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
             "--embed-subs",
+            "--extractor-args", "youtube:player_client=web,web_embedded,tv",
             "--js-runtimes", "deno",
+            "--remote-components", "ejs:github",
             "-f", f"{youtube_dl_format}/bestvideo+bestaudio/best",
             "--hls-prefer-ffmpeg",
             "--cookies", cookies_file,
-            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             youtube_dl_url,
             "-o", download_directory
         ]
