@@ -28,7 +28,7 @@ as a file or video.
     ABOUT_TEXT = """
 ╭───────────────⍟
 │ 📛 **Bot Name** : URL Uploader Bot
-│ 📢 **Framework** : <a href="https://docs.pyrogram.org/">PyroBlock 2.3.80</a>
+│ 📢 **Framework** : <a href="https://docs.pyrogram.org/">PyroBlock 2.3.82</a>
 │ 💻 **Language** : <a href="https://www.python.org">Python 3.14.7</a>
 │ 💾 **Database** : <a href="https://cloud.mongodb.com">MongoDB</a>
 │ 🚨 **Support Group** : <a href="https://t.me/NT_BOTS_SUPPORT">NT Support</a>
